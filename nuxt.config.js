@@ -34,28 +34,54 @@ export default {
   modules: [
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
+    '@nuxtjs/auth-next',
   ],
+  auth: {
+    strategies: {
+      local: {
+        token: {
+          property: 'token',
+          // required: true,
+          // type: 'Bearer'
+        },
+        user: {
+          property: 'user',
+          // autoFetch: true
+        },
+        endpoints: {
+          login: { url: 'auth/login', method: 'post' },
+          logout: { url: 'auth/logout', method: 'post' },
+          user: { url: 'auth/get-user', method: 'get' },
+        },
+      },
+    },
+  },
 
   // Axios module configuration (https://go.nuxtjs.dev/config-axios)
-  axios: {},
+  axios: { baseURL: process.env.BASE_URL || 'http://localhost:5000/api/' },
 
   // Vuetify module configuration (https://go.nuxtjs.dev/config-vuetify)
   vuetify: {
     customVariables: ['~/assets/variables.scss'],
     theme: {
-      dark: true,
+      dark: false,
       themes: {
-        dark: {
-          primary: colors.blue.darken2,
-          accent: colors.grey.darken3,
-          secondary: colors.amber.darken3,
-          info: colors.teal.lighten1,
+        light: {
+          primary: '#5070c8',
+          accent: '#543568',
+          secondary: '#f5f7fa',
+          info: colors.teal.lighten3,
           warning: colors.amber.base,
-          error: colors.deepOrange.accent4,
-          success: colors.green.accent3,
+          error: '#ff7159',
+          success: '#2ad69b',
+          background: '#f1eeee',
         },
       },
     },
+  },
+  loading: {
+    color: '#5070c8',
+    height: '4px',
   },
 
   // Build Configuration (https://go.nuxtjs.dev/config-build)
