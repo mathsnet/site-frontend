@@ -1,6 +1,6 @@
 <template>
   <v-footer :absolute="!fixed" app>
-    <span
+    <span class="text-center"
       >&copy; {{ new Date().getFullYear() }}, {{ appName }}. All Right Reserved.
       Developed by <span class="font-weight-bold">Rastaarc</span>, Designed by
       <span class="font-weight-bold">Winnpixels</span></span

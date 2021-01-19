@@ -80,7 +80,7 @@
           </div>
           <div v-else>
             <!-- User logged-in -->
-            <v-list-item nuxt :to="dashboard">
+            <v-list-item nuxt :to="dashboard" exact>
               <v-list-item-content>
                 <v-list-item-title class="primary--text"
                   >Dashboard</v-list-item-title
@@ -118,8 +118,6 @@ export default {
   },
   computed: {
     dashboard() {
-      // eslint-disable-next-line no-console
-      console.log(this.$auth.user)
       if (
         this.$auth.user &&
         this.$auth.user.user_type === CONSTANTS.USER_TYPES.ADMIN
