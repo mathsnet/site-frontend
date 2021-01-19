@@ -121,6 +121,16 @@ export default {
       this.loading = false
     },
   },
+  head: {
+    title: `Signup`,
+    meta: [
+      {
+        hid: 'description',
+        name: 'description',
+        content: `${CONSTANTS.APP_NAME} signup page, Online maths schools`,
+      },
+    ],
+  },
 }
 </script>
 

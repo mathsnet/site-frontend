@@ -18,6 +18,8 @@
 </template>
 
 <script>
+import { CONSTANTS } from '~/assets/javascript/constants'
+
 export default {
   layout: 'homepage',
   components: {},
@@ -25,6 +27,16 @@ export default {
     return {
       displayImage: '/images/hero_image.png',
     }
+  },
+  head: {
+    title: `Home`,
+    meta: [
+      {
+        hid: 'description',
+        name: 'description',
+        content: `${CONSTANTS.APP_NAME} Homepage, Online maths schools`,
+      },
+    ],
   },
 }
 </script>
