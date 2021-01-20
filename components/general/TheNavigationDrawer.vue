@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-navigation-drawer v-model="showNavBar" app>
-      <v-list>
+      <v-list nav>
         <v-list-item
           v-for="(item, i) in items"
           :key="i"
