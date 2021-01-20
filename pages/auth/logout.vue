@@ -3,6 +3,8 @@
 </template>
 
 <script>
+import { CONSTANTS } from '~/assets/javascript/constants'
+
 export default {
   name: 'Logout',
   layout: 'homepage',
@@ -17,7 +19,12 @@ export default {
       } catch (e) {
         // eslint-disable-next-line no-console
         console.log(e)
+        this.$store.dispatch(
+          'snackalert/showErrorSnackbar',
+          CONSTANTS.MESSAGES.UNKNOWN_ERROR
+        )
       }
+      this.$store.dispatch('actionoverlay/updateOverlayAction', false)
       this.$router.push('/')
     },
   },
