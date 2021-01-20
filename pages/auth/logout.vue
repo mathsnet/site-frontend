@@ -16,6 +16,10 @@ export default {
       this.$store.dispatch('actionoverlay/updateOverlayAction', true)
       try {
         await this.$auth.logout()
+		this.$store.dispatch(
+          'snackalert/showSuccessSnackbar',
+          CONSTANTS.MESSAGES.LOGOUT_SUCCESSFUL
+        )
       } catch (e) {
         // eslint-disable-next-line no-console
         console.log(e)

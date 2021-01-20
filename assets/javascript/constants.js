@@ -10,6 +10,7 @@ export const CONSTANTS = {
     INVALID_CREDENTIALS:
       'Sorry! Invalid credentials supplied, Please try again',
     NEW_ACCOUNT_SUCCESSFUL: 'Account created successfully',
+	LOGOUT_SUCCESSFUL: 'Your account has been logged out successfully',
     UNKNOWN_ERROR: 'Unknown Error occurred. Please try again',
     INVALID_USERNAME: 'Invalid Username supplied. Please choose another one',
     LOGIN_SUC: 'Account Logged-in successfully',
