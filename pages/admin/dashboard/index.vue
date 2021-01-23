@@ -22,7 +22,9 @@
           rounded
         >
           <v-row>
-            <v-col cols="2"> Icon </v-col>
+            <v-col cols="2">
+              <v-icon color="white" x-large>mdi-book-education-outline</v-icon>
+            </v-col>
             <v-col cols="10" class="text-center">
               <div class="display-3 font-weight-bold">{{ item.count }}</div>
               <div class="text-uppercase title" v-html="item.text"></div>
@@ -44,13 +46,10 @@
           class="pa-4 white--text"
           rounded
         >
-          <v-row>
-            <v-col cols="2"> Icon </v-col>
-            <v-col cols="10" class="text-center">
-              <div class="text-h4 font-weight-bold">{{ item.head }}</div>
-              <div class="text-uppercase title">{{ item.text }}</div>
-            </v-col>
-          </v-row>
+          <div class="text-center">
+            <div class="text-h3 font-weight-bold">{{ item.head }}</div>
+            <div class="text-uppercase title">{{ item.text }}</div>
+          </div>
         </v-sheet>
       </v-col>
     </v-row>

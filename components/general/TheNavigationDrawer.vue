@@ -9,9 +9,9 @@
           router
           exact
         >
-          <v-list-item-action>
-            <v-icon>{{ item.icon }}</v-icon>
-          </v-list-item-action>
+          <v-list-item-icon>
+            <v-icon v-text="item.icon"></v-icon>
+          </v-list-item-icon>
           <v-list-item-content>
             <v-list-item-title class="white--text" dark v-text="item.title" />
           </v-list-item-content>
@@ -49,7 +49,7 @@ export default {
         {
           title: 'Profile',
           to: { name: 'profile' },
-          icon: 'mdi-user',
+          icon: 'mdi-account-circle-outline',
         },
       ],
       instructorItems: [
@@ -63,42 +63,42 @@ export default {
         {
           title: 'Dashboard',
           to: { name: 'admin-dashboard' },
-          icon: 'mdi-dashboard',
+          icon: 'mdi-view-dashboard-outline',
         },
         {
           title: 'Courses',
           to: { name: 'admin-courses' },
-          icon: 'mdi-books',
+          icon: 'mdi-book-open-outline',
         },
         {
           title: 'Topics',
           to: { name: 'admin-topics' },
-          icon: 'mdi-books',
+          icon: 'mdi-book-open-page-variant-outline',
         },
         {
           title: 'Levels',
           to: { name: 'admin-levels' },
-          icon: 'mdi-books',
+          icon: 'mdi-badge-account-horizontal-outline',
         },
         {
           title: 'Past Questions',
           to: { name: 'admin-pq' },
-          icon: 'mdi-books',
+          icon: 'mdi-cast-education',
         },
         {
           title: 'Instructors',
           to: { name: 'admin-instructors' },
-          icon: 'mdi-books',
+          icon: 'mdi-clipboard-account-outline',
         },
         {
           title: 'Students',
           to: { name: 'admin-students' },
-          icon: 'mdi-books',
+          icon: 'mdi-account-supervisor-outline',
         },
         {
-          title: 'Students',
+          title: 'Profile',
           to: { name: 'profile' },
-          icon: 'mdi-user-circle-alt',
+          icon: 'mdi-account-circle-outline',
         },
       ],
     }
