@@ -13,10 +13,10 @@ export default {
   },
   methods: {
     async logoutUser() {
-      this.$store.dispatch('actionoverlay/updateOverlayAction', true)
+      this.$store.dispatch('actionoverlay/updateOverlayAction', true, 0.95)
       try {
         await this.$auth.logout()
-		this.$store.dispatch(
+        this.$store.dispatch(
           'snackalert/showSuccessSnackbar',
           CONSTANTS.MESSAGES.LOGOUT_SUCCESSFUL
         )

@@ -1,10 +1,11 @@
 <template>
-  <div></div>
+  <div>Student Dashboard</div>
 </template>
 
 <script>
 export default {
   name: 'Index',
+  middleware: ['authenticate', 'auth-student'],
 }
 </script>
 

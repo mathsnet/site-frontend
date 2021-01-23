@@ -1,5 +1,7 @@
 <template>
-  <v-snackbar v-model="showSnackAlert" :color="color"> {{ text }}</v-snackbar>
+  <v-snackbar v-model="showSnackAlert" :color="color" bottom left>
+    {{ text }}</v-snackbar
+  >
 </template>
 
 <script>

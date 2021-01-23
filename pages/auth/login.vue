@@ -53,6 +53,7 @@ import { formRules } from '~/assets/javascript/formRules'
 export default {
   name: 'Login',
   layout: 'auth',
+  middleware: 'auth-login-signup',
   data() {
     return {
       loginData: {

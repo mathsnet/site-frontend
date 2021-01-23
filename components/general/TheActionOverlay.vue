@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-overlay :value="showOverlay" opacity="0.8">
+    <v-overlay :value="showOverlay" :opacity="opacity">
       <v-progress-circular size="50" indeterminate></v-progress-circular>
     </v-overlay>
   </div>
@@ -12,6 +12,9 @@ export default {
   computed: {
     showOverlay() {
       return this.$store.getters['actionoverlay/getShow']
+    },
+    opacity() {
+      return this.$store.getters['actionoverlay/getOpacity']
     },
   },
 }

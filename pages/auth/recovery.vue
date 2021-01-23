@@ -8,6 +8,7 @@ import { CONSTANTS } from '~/assets/javascript/constants'
 export default {
   name: 'Recovery',
   layout: 'auth',
+  middleware: 'auth-login-signup',
   head: {
     title: `Forget Password`,
     meta: [

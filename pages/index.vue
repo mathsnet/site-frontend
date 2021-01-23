@@ -29,7 +29,7 @@
       </v-col>
     </v-row>
     <v-row>
-      <v-col cols="12" v-for="n in 6" :key="n">
+      <v-col v-for="n in 6" :key="n" cols="12">
         <v-card class="mx-5">
           <v-card-title>Title</v-card-title>
           <v-card-text>Text</v-card-text>

@@ -73,6 +73,7 @@ import { formRules } from '~/assets/javascript/formRules'
 export default {
   name: 'Signup',
   layout: 'auth',
+  middleware: 'auth-login-signup',
   data() {
     return {
       rules: formRules,
@@ -107,6 +108,7 @@ export default {
         // eslint-disable-next-line no-console
         console.log(data)
         this.$store.dispatch('snackalert/showSuccessSnackbar', data.message)
+        this.$router.push({ name: 'auth-login' })
       } catch (e) {
         // eslint-disable-next-line no-console
         console.log(e)

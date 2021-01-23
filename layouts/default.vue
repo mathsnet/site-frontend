@@ -33,7 +33,7 @@ export default {
   data() {
     return {
       title: CONSTANTS.APP_NAME,
-      drawer: true,
+      drawer: false,
       fixed: false,
     }
   },

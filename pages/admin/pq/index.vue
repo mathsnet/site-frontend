@@ -1,10 +1,12 @@
 <template>
-  <div>Instructor Dashboard</div>
+  <div>Past Questions</div>
 </template>
 
 <script>
 export default {
-  middleware: ['authenticate', 'auth-instructor'],
+  head: {
+    title: 'Past Questions',
+  },
 }
 </script>
 

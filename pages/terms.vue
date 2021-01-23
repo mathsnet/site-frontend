@@ -1,10 +1,10 @@
 <template>
-  <div>Instructor Dashboard</div>
+  <div>Terms & Conditions</div>
 </template>
 
 <script>
 export default {
-  middleware: ['authenticate', 'auth-instructor'],
+  name: 'Terms',
 }
 </script>
 
