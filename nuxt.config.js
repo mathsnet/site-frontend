@@ -1,13 +1,17 @@
-
 export default {
   // Global page headers (https://go.nuxtjs.dev/config-head)
   head: {
-    titleTemplate: '%s - mathnets',
-    title: 'mathnets',
+    titleTemplate: '%s - Mathnets',
+    title: 'Mathnets',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: '' },
+      {
+        hid: 'description',
+        name: 'description',
+        content:
+          'Online maths schools, Learn Maths swiftly with best techniques',
+      },
     ],
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
   },
@@ -57,7 +61,7 @@ export default {
   },
 
   // Axios module configuration (https://go.nuxtjs.dev/config-axios)
-  axios: { baseURL: process.env.BASE_URL || 'http://localhost:5000/api/' },
+  axios: { baseURL: process.env.BASE_URL || 'http://localhost:5000/api/v1/' },
 
   // Vuetify module configuration (https://go.nuxtjs.dev/config-vuetify)
   vuetify: {

@@ -1,5 +1,5 @@
 <template>
-  <div class="mb-5">
+  <div class="mb-md-15">
     <div
       class="primary--text font-weight-bold text-h5 text-sm-h4 text-md-h3 mb-5"
     >
@@ -43,12 +43,15 @@
           elevation="7"
           :color="boardColors[overviewItems.length + i]"
           height="200px"
-          class="pa-4 white--text"
+          class="pa-2 pt-4 white--text"
           rounded
         >
           <div class="text-center">
-            <div class="text-h3 font-weight-bold">{{ item.head }}</div>
-            <div class="text-uppercase title">{{ item.text }}</div>
+            <div class="text-h4 text-md-h5 font-weight-bold text-uppercase">
+              {{ item.head }}
+            </div>
+            <v-divider dark></v-divider>
+            <div class="text-uppercase subtitle-1 mt-3">{{ item.text }}</div>
           </div>
         </v-sheet>
       </v-col>
@@ -58,7 +61,7 @@
 
 <script>
 export default {
-  middleware: ['authenticate', 'admin-auth'],
+  middleware: ['authenticate', 'auth-admin'],
   data() {
     return {
       d: null,
@@ -71,7 +74,7 @@ export default {
         'blue darken-4',
         'red darken-4',
         'green lighten-1',
-        'amber',
+        'amber darken-4',
       ],
     }
   },

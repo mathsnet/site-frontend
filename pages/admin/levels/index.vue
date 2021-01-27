@@ -3,11 +3,7 @@
 </template>
 
 <script>
-export default {
-  head: {
-    title: 'Courses',
-  },
-}
+export default {}
 </script>
 
 <style scoped></style>

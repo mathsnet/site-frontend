@@ -1,9 +1,24 @@
 export const CONSTANTS = {
-  APP_NAME: 'mathnets',
+  APP_NAME: 'Mathnets',
   USER_TYPES: {
     STUDENT: '1',
     INSTRUCTOR: '2',
     ADMIN: '3',
+  },
+  ROUTES: {
+    BASE_URL: 'http://localhost:5000/api/v1/',
+    ADMIN: {
+      ADD_COURSE: 'admin/add/course',
+      ADD_SUBSCRIPTION: 'admin/add/subscription',
+      GET_COURSES: 'admin/get/courses',
+      GET_SUBSCRIPTIONS: 'admin/get/subscriptions',
+    },
+    AUTH: {
+      LOGIN: 'auth/login',
+      SIGNUP: 'auth/signup',
+      LOGOUT: 'auth/logout',
+      USER: 'auth/get-user',
+    },
   },
   MESSAGES: {
     NO_VALID_CREDENTIALS: 'No credentials supplied, Please try again',
@@ -27,5 +42,10 @@ export const CONSTANTS = {
     STUDENT_REQUIRED: 'Sorry! only students can access that page',
     ALREADY_LOGIN:
       'Please Logout first before you can have access to that page',
+    FETCH_LOADING_ERROR:
+      'Error Occurred while fetching the data. Please reload the page',
+    FETCH_LOADING_SUCCESS: 'Data Fetched successfully',
+    FETCH_LOADING_DATA: 'Loading Data.........',
+    NO_DATA_TO_DISPLAY: 'SORRY! NO DATA AVAILABLE TO DISPLAY',
   },
 }

@@ -5,6 +5,7 @@
 <script>
 export default {
   name: 'Terms',
+  layout: 'homepage',
 }
 </script>
 

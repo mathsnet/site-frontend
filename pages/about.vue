@@ -5,6 +5,7 @@
 <script>
 export default {
   name: 'About',
+  layout: 'homepage',
 }
 </script>
 

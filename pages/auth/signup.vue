@@ -102,7 +102,7 @@ export default {
       }
       this.loading = true
       try {
-        const { data } = await this.$axios.post('auth/signup', {
+        const { data } = await this.$axios.post(CONSTANTS.ROUTES.AUTH.SIGNUP, {
           data: this.signupData,
         })
         // eslint-disable-next-line no-console

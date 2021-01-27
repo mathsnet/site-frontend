@@ -4,7 +4,7 @@
       <div
         class="primary--text font-weight-bold text-h6 text-sm-h4 text-md-h3 mb-5"
       >
-        Courses
+        Subscriptions
       </div>
       <div class="ml-auto">
         <v-btn
@@ -12,12 +12,12 @@
           :large="large"
           :x-large="xLarge"
           color="primary"
-          @click.stop="openNewCourseDialog"
+          @click.stop="openNewSubscriptionDialog"
           ><v-icon left>mdi-plus-circle</v-icon>Add New</v-btn
         >
       </div>
     </div>
-    <v-divider class="mb-6"></v-divider>
+    <v-divider class="mt-7"></v-divider>
     <div v-if="$fetchState.pending">
       {{ fetchPendingMessage }}
     </div>
@@ -25,45 +25,54 @@
       {{ fetchErrorMessage }}
     </div>
     <div v-else>
-      <v-row v-if="courses.length > 0">
-        <v-col v-for="(item, i) in courses" :key="i" sm="6" md="4" class="mb-2">
-          <CourseDataCard
+      <v-row v-if="subscriptions.length > 0">
+        <v-col
+          v-for="(item, i) in subscriptions"
+          :key="i"
+          sm="6"
+          md="4"
+          class="mb-2"
+        >
+          <SubscriptionDataCard
             :item="item"
             @deleteData="deleteData($event)"
             @updateData="updateData($event)"
           />
         </v-col>
       </v-row>
-      <div v-else class="mx-auto text-center display-3 font-weight-bold">
+      <div v-else class="text-center display-3 font-weight-bold mx-auto">
         {{ noData }}
       </div>
     </div>
-    <NewCourseDialog
-      :show-dialog="showNewCourseDialog"
-      @closeDialog="closeNewCourseDialog"
+    <NewSubscriptionDialog
+      :show-dialog="dialogState"
+      @closeDialog="closeDialog"
       @reloadData="$fetch"
     />
   </div>
 </template>
 
 <script>
-import NewCourseDialog from '~/components/dialogs/NewCourseDialog'
-import CourseDataCard from '~/components/cards/CourseDataCard'
+import NewSubscriptionDialog from '~/components/dialogs/NewSubscriptionDialog'
+import SubscriptionDataCard from '~/components/cards/SubscriptionDataCard'
 import { CONSTANTS } from '~/assets/javascript/constants'
+
 export default {
   middleware: ['authenticate', 'auth-admin'],
   components: {
-    NewCourseDialog,
-    CourseDataCard,
+    NewSubscriptionDialog,
+    SubscriptionDataCard,
   },
   async fetch() {
-    const { data } = await this.$axios.get(CONSTANTS.ROUTES.ADMIN.GET_COURSES)
-    this.courses = data.data
+    const { data } = await this.$axios.get(
+      CONSTANTS.ROUTES.ADMIN.GET_SUBSCRIPTIONS
+    )
+    this.subscriptions = data.subscriptions
   },
   data() {
     return {
-      courses: [],
-      showNewCourseDialog: false,
+      dialogState: false,
+      subscriptions: [],
       fetchPendingMessage: CONSTANTS.MESSAGES.FETCH_LOADING_DATA,
       fetchErrorMessage: CONSTANTS.MESSAGES.FETCH_LOADING_ERROR,
       noData: CONSTANTS.MESSAGES.NO_DATA_TO_DISPLAY,
@@ -100,11 +109,11 @@ export default {
     },
   },
   methods: {
-    openNewCourseDialog() {
-      this.showNewCourseDialog = true
+    openNewSubscriptionDialog() {
+      this.dialogState = true
     },
-    closeNewCourseDialog() {
-      this.showNewCourseDialog = false
+    closeDialog() {
+      this.dialogState = false
     },
     deleteData({ id }) {
       console.log(id)
@@ -112,9 +121,6 @@ export default {
     updateData({ id }) {
       console.log(id)
     },
-  },
-  head: {
-    title: 'Courses',
   },
 }
 </script>

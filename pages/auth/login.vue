@@ -80,23 +80,17 @@ export default {
         const res = await this.$auth.loginWith('local', {
           data: this.loginData,
         })
-        // eslint-disable-next-line no-console
-        console.log(res)
         this.$store.dispatch('snackalert/updateSnackbar', {
           color: 'success',
           msg: res.data.message,
           show: true,
         })
       } catch (e) {
-        // eslint-disable-next-line no-console
-        console.log(e)
         let msg
         if (e.response) {
           msg = e.response.data.message
         } else {
           msg = CONSTANTS.MESSAGES.UNKNOWN_ERROR
-          // eslint-disable-next-line no-console
-          console.log(msg)
         }
         this.$store.dispatch('snackalert/updateSnackbar', {
           color: 'error',

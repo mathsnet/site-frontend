@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-navigation-drawer v-model="showNavBar" absolute app color="primary" dark>
+    <v-navigation-drawer v-model="drawer" fixed app color="primary" dark>
       <v-list nav>
         <v-list-item
           v-for="(item, i) in items"
@@ -25,6 +25,15 @@
         </div>
       </template>
     </v-navigation-drawer>
+    <v-app-bar color="primary" fixed app>
+      <v-app-bar-nav-icon class="white--text" @click.stop="drawer = !drawer" />
+      <v-toolbar-title class="white--text"
+        ><v-btn exact text :to="{ name: 'index' }" dark>{{
+          title
+        }}</v-btn></v-toolbar-title
+      >
+      <v-spacer />
+    </v-app-bar>
   </div>
 </template>
 
@@ -40,6 +49,8 @@ export default {
   },
   data() {
     return {
+      drawer: false,
+      title: CONSTANTS.APP_NAME,
       studentItems: [
         {
           title: 'Dashboard',
@@ -74,6 +85,11 @@ export default {
           title: 'Topics',
           to: { name: 'admin-topics' },
           icon: 'mdi-book-open-page-variant-outline',
+        },
+        {
+          title: 'Subscriptions',
+          to: { name: 'admin-subscriptions' },
+          icon: 'mdi-badge-account-horizontal-outline',
         },
         {
           title: 'Levels',

@@ -1,51 +1,56 @@
 <template>
-  <v-footer :absolute="!fixed" padless app>
-    <div class="mt-5 mb-5"><v-divider></v-divider></div>
-    <v-card
-      :color="$vuetify.theme.themes.light.background"
-      class="mt-5 text-center text-sm-left"
-      min-width="100%"
-    >
-      <v-card-text>
-        <v-row justify="center" class="mx-auto">
-          <v-col cols="12" sm="4" lg="3">
-            <span class="headline font-weight-medium primary--text"
-              >Navigation</span
-            >
-            <ListItems :items="navigation" />
-          </v-col>
-          <v-col cols="12" sm="4" lg="3">
-            <span class="headline font-weight-medium primary--text"
-              >Interactive</span
-            >
-            <ListItems :items="interactive" />
-          </v-col>
-          <v-col cols="12" sm="4" lg="3">
-            <span class="headline font-weight-medium primary--text"
-              >Company</span
-            >
-            <ListItems :items="company" />
-          </v-col>
-        </v-row>
-        <v-row
-          justify="center"
-          align="center"
-          align-content="center"
-          class="text-center"
-        >
-          <v-col cols="12" align-self="center" class="text-center">
-            <v-divider></v-divider>
-            <span class="text-center"
-              >&copy; {{ new Date().getFullYear() }}, {{ appName }}. All Right
-              Reserved. Developed by
-              <span class="font-weight-bold">Rastaarc</span>, Designed by
-              <span class="font-weight-bold">Winnpixels</span></span
-            >
-          </v-col>
-        </v-row>
-      </v-card-text>
-    </v-card>
-  </v-footer>
+  <div class="mt-7 mt-sm-15">
+    <v-footer padless app>
+      <v-card
+        :color="$vuetify.theme.themes.light.background"
+        class="mt-5 text-center text-sm-left"
+        min-width="100%"
+      >
+        <v-card-text>
+          <v-row
+            v-if="$vuetify.breakpoint.name !== 'xs'"
+            justify="center"
+            class="mx-auto"
+          >
+            <v-col cols="12" sm="4" lg="3">
+              <span class="headline font-weight-medium primary--text"
+                >Navigation</span
+              >
+              <ListItems :items="navigation" />
+            </v-col>
+            <v-col cols="12" sm="4" lg="3">
+              <span class="headline font-weight-medium primary--text"
+                >Interactive</span
+              >
+              <ListItems :items="interactive" />
+            </v-col>
+            <v-col cols="12" sm="4" lg="3">
+              <span class="headline font-weight-medium primary--text"
+                >Company</span
+              >
+              <ListItems :items="company" />
+            </v-col>
+          </v-row>
+          <v-row
+            justify="center"
+            align="center"
+            align-content="center"
+            class="text-center"
+          >
+            <v-col cols="12" align-self="center" class="text-center">
+              <v-divider></v-divider>
+              <span class="text-center"
+                >&copy; {{ new Date().getFullYear() }}, {{ appName }}. All Right
+                Reserved. Developed by
+                <span class="font-weight-bold">Rastaarc</span>, Designed by
+                <span class="font-weight-bold">Winnpixels</span></span
+              >
+            </v-col>
+          </v-row>
+        </v-card-text>
+      </v-card>
+    </v-footer>
+  </div>
 </template>
 
 <script>
