@@ -21,8 +21,6 @@ export default {
           CONSTANTS.MESSAGES.LOGOUT_SUCCESSFUL
         )
       } catch (e) {
-        // eslint-disable-next-line no-console
-        console.log(e)
         this.$store.dispatch(
           'snackalert/showErrorSnackbar',
           CONSTANTS.MESSAGES.UNKNOWN_ERROR
