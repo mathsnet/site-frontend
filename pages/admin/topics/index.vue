@@ -1,11 +1,12 @@
 <template>
-  <div>Levels</div>
+  <div>Topics</div>
 </template>
 
 <script>
 export default {
+  middleware: ['authenticate', 'auth-admin'],
   head: {
-    title: 'Levels',
+    title: "Topics' List",
   },
 }
 </script>

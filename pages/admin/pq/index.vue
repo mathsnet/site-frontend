@@ -4,8 +4,9 @@
 
 <script>
 export default {
+  middleware: ['authenticate', 'auth-admin'],
   head: {
-    title: 'Past Questions',
+    title: "Past Questions' List",
   },
 }
 </script>

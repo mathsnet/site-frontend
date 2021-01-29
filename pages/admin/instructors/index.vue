@@ -4,8 +4,9 @@
 
 <script>
 export default {
+  middleware: ['authenticate', 'auth-admin'],
   head: {
-    title: 'Instructors',
+    title: "Instructors' List",
   },
 }
 </script>

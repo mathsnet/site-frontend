@@ -1,5 +1,5 @@
 export const CONSTANTS = {
-  APP_NAME: 'Mathnets',
+  APP_NAME: 'MathsNet',
   USER_TYPES: {
     STUDENT: '1',
     INSTRUCTOR: '2',
@@ -9,7 +9,9 @@ export const CONSTANTS = {
     BASE_URL: 'http://localhost:5000/api/v1/',
     ADMIN: {
       ADD_COURSE: 'admin/add/course',
+      UPDATE_COURSE: 'admin/update/course',
       ADD_SUBSCRIPTION: 'admin/add/subscription',
+      UPDATE_SUBSCRIPTION: 'admin/update/subscription',
       GET_COURSES: 'admin/get/courses',
       GET_SUBSCRIPTIONS: 'admin/get/subscriptions',
     },

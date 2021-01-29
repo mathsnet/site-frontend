@@ -8,40 +8,40 @@
     >
       <v-card>
         <v-card-title class="primary--text">
-          Add New Subscription
+          {{ callee === 'update' ? 'Update' : 'Add New' }} Subscription
         </v-card-title>
         <v-card-text>
           <v-form
-            ref="newCourseForm"
+            ref="subscriptionForm"
             :value="valid"
-            @submit.prevent="addNewSubscription"
+            @submit.prevent="submitData"
           >
             <v-text-field
-              v-model="newSubscriptionData.title"
+              v-model="subscriptionData.title"
               label="Subscription Title"
               :rules="rules.newSubscriptionTitle"
             ></v-text-field>
             <v-textarea
-              v-model="newSubscriptionData.description"
+              v-model="subscriptionData.description"
               label="Subscription Description"
               :rules="rules.newSubscriptionDescription"
             ></v-textarea>
             <v-text-field
-              v-model="newSubscriptionData.duration"
+              v-model="subscriptionData.duration"
               label="Subscription Duration(in year)"
               :rules="rules.newSubscriptionDuration"
               type="number"
             ></v-text-field>
             <v-text-field
-              v-model="newSubscriptionData.price"
+              v-model="subscriptionData.price"
               label="Subscription Price"
               :rules="rules.newSubscriptionPrice"
               type="number"
             ></v-text-field>
             <div class="text-center mt-7">
-              <v-btn :loading="loading" color="primary" type="submit"
-                >Add</v-btn
-              >
+              <v-btn :loading="loading" color="primary" type="submit">{{
+                callee === 'update' ? 'Update' : 'Add'
+              }}</v-btn>
             </div>
           </v-form>
         </v-card-text>
@@ -60,6 +60,14 @@ import { formRules } from '~/assets/javascript/formRules'
 import { CONSTANTS } from '~/assets/javascript/constants'
 export default {
   props: {
+    callee: {
+      type: String,
+      default: 'add',
+    },
+    subscriptionData: {
+      type: Object,
+      default: () => {},
+    },
     showDialog: {
       type: Boolean,
       default: false,
@@ -77,12 +85,6 @@ export default {
     return {
       rules: formRules,
       valid: false,
-      newSubscriptionData: {
-        title: null,
-        description: null,
-        duration: null,
-        price: null,
-      },
       loading: false,
     }
   },
@@ -92,8 +94,8 @@ export default {
       this.clearData()
       this.$emit('closeDialog')
     },
-    async addNewSubscription() {
-      if (!this.$refs.newCourseForm.validate()) {
+    async submitData() {
+      if (!this.$refs.subscriptionForm.validate()) {
         this.$store.dispatch(
           'snackalert/showErrorSnackbar',
           CONSTANTS.MESSAGES.FORM_ERROR
@@ -102,18 +104,18 @@ export default {
       }
       this.loading = true
       try {
-        this.newSubscriptionData.title = _.capitalize(
-          this.newSubscriptionData.title
-        )
-        const data = await this.$axios.post(
-          CONSTANTS.ROUTES.ADMIN.ADD_SUBSCRIPTION,
-          {
-            data: this.newSubscriptionData,
-          }
-        )
+        this.subscriptionData.title = _.capitalize(this.subscriptionData.title)
+        let url
+        if (this.callee === 'add') {
+          url = CONSTANTS.ROUTES.ADMIN.ADD_SUBSCRIPTION
+        } else {
+          url = CONSTANTS.ROUTES.ADMIN.UPDATE_SUBSCRIPTION
+        }
+        const { data } = await this.$axios.post(url, {
+          data: this.subscriptionData,
+        })
         this.$store.dispatch('snackalert/showSuccessSnackbar', data.message)
         this.$emit('reloadData')
-        this.clearData()
       } catch (e) {
         let msg
         if (e.response) {
@@ -122,16 +124,15 @@ export default {
           msg = CONSTANTS.MESSAGES.UNKNOWN_ERROR
         }
         this.$store.dispatch('snackalert/showErrorSnackbar', msg)
-        console.log(e)
       }
       this.loading = false
-      // this.closeDialog()
+      this.closeDialog()
     },
     clearData() {
-      this.newSubscriptionData.title = ''
-      this.newSubscriptionData.description = ''
-      this.newSubscriptionData.duration = ''
-      this.newSubscriptionData.price = ''
+      this.subscriptionData.title = ''
+      this.subscriptionData.description = ''
+      this.subscriptionData.duration = ''
+      this.subscriptionData.price = ''
     },
   },
 }

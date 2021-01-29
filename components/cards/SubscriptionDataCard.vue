@@ -21,10 +21,10 @@
           :x-small="xSmall"
           outlined
           color="primary"
-          @click="updateData(item.id)"
+          @click="updateData(item)"
           >Modify</v-btn
         >
-        <v-btn :x-small="xSmall" color="error" @click="deleteData(item.id)"
+        <v-btn :x-small="xSmall" color="error" @click="deleteData(item)"
           >Delete</v-btn
         >
       </v-card-actions>
@@ -53,11 +53,11 @@ export default {
     },
   },
   methods: {
-    updateData(id) {
-      this.$emit('updateData', { id })
+    updateData(item) {
+      this.$emit('updateData', { ...item })
     },
-    deleteData(id) {
-      this.$emit('deleteData', { id })
+    deleteData(item) {
+      this.$emit('deleteData', { ...item })
     },
   },
 }

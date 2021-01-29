@@ -106,6 +106,9 @@ export default {
       return 200
     },
   },
+  head: {
+    title: 'Dashboard',
+  },
 }
 </script>
 

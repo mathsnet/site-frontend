@@ -10,15 +10,16 @@
       <v-card-text> {{ item.description }} </v-card-text>
       <v-divider></v-divider>
       <v-card-actions>
-        Rating <v-spacer></v-spacer>
+        <v-rating x-small :length="5" :value="3" color="primary" />
+        <v-spacer></v-spacer>
         <v-btn
           :x-small="xSmall"
           outlined
           color="primary"
-          @click="updateData(item.id)"
+          @click="updateData(item)"
           >Modify</v-btn
         >
-        <v-btn :x-small="xSmall" color="error" @click="deleteData(item.id)"
+        <v-btn :x-small="xSmall" color="error" @click="deleteData(item)"
           >Delete</v-btn
         >
       </v-card-actions>
@@ -49,11 +50,11 @@ export default {
     },
   },
   methods: {
-    updateData(id) {
-      this.$emit('updateData', { id })
+    updateData(item) {
+      this.$emit('updateData', { ...item })
     },
-    deleteData(id) {
-      this.$emit('deleteData', { id })
+    deleteData(item) {
+      this.$emit('deleteData', { ...item })
     },
   },
 }

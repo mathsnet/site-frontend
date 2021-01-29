@@ -3,7 +3,12 @@
 </template>
 
 <script>
-export default {}
+export default {
+  middleware: ['authenticate', 'auth-admin'],
+  head: {
+    title: "Students' List",
+  },
+}
 </script>
 
 <style scoped></style>

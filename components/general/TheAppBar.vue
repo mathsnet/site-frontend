@@ -28,10 +28,17 @@
     <v-app-bar color="primary" fixed app>
       <v-app-bar-nav-icon class="white--text" @click.stop="drawer = !drawer" />
       <v-toolbar-title class="white--text"
-        ><v-btn exact text :to="{ name: 'index' }" dark>{{
-          title
-        }}</v-btn></v-toolbar-title
-      >
+        ><!--<v-btn
+          tile
+          plain
+          class="text-capitalize"
+          text
+          :to="{ name: 'index' }"
+          dark
+          >{{ title }}</v-btn
+        >-->
+        <TheSiteLogo logo-type="white" />
+      </v-toolbar-title>
       <v-spacer />
     </v-app-bar>
   </div>
@@ -39,8 +46,10 @@
 
 <script>
 import { CONSTANTS } from '~/assets/javascript/constants'
+import TheSiteLogo from '~/components/general/TheSiteLogo'
 
 export default {
+  components: { TheSiteLogo },
   props: {
     showNavBar: {
       type: Boolean,

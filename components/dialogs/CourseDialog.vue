@@ -7,7 +7,9 @@
       persistent
     >
       <v-card>
-        <v-card-title class="primary--text"> Add New Course </v-card-title>
+        <v-card-title class="primary--text">
+          {{ callee === 'update' ? 'Update' : 'Add New' }} Course
+        </v-card-title>
         <v-card-text>
           <div v-if="$fetchState.pending">
             {{ fetchPendingMessage }}
@@ -17,36 +19,32 @@
           </div>
           <v-form
             v-else
-            ref="newCourseForm"
+            ref="courseForm"
             :value="valid"
-            @submit.prevent="addNewCourse"
+            @submit.prevent="submitForm"
           >
             <v-text-field
-              v-model="newCourseData.title"
+              v-model="courseData.title"
               label="Course Title"
               :rules="rules.newCourseTitle"
             ></v-text-field>
             <v-textarea
-              v-model="newCourseData.description"
+              v-model="courseData.description"
               label="Course Description"
               :rules="rules.newCourseDescription"
             ></v-textarea>
             <v-select
-              v-model="newCourseData.subscription"
-              label="Course Level"
+              v-model="courseData.subscription"
+              label="Course Subscription Level"
               :items="subscriptions"
               item-text="title"
               item-value="id"
               :rules="rules.newCourseLevel"
             ></v-select>
             <div class="text-center mt-7">
-              <v-btn
-                :loading="loading"
-                color="primary"
-                dark
-                @click="addNewCourse"
-                >Add</v-btn
-              >
+              <v-btn :loading="loading" color="primary" dark type="submit">{{
+                callee === 'update' ? 'Update' : 'Add'
+              }}</v-btn>
             </div>
           </v-form>
         </v-card-text>
@@ -69,6 +67,14 @@ export default {
       type: Boolean,
       default: false,
     },
+    courseData: {
+      type: Object,
+      default: () => {},
+    },
+    callee: {
+      type: String,
+      default: 'add',
+    },
     maxWidth: {
       type: Number,
       default: 450,
@@ -88,11 +94,6 @@ export default {
     return {
       rules: formRules,
       valid: false,
-      newCourseData: {
-        title: '',
-        description: '',
-        subscription: '',
-      },
       loading: false,
       fetchPendingMessage: CONSTANTS.MESSAGES.FETCH_LOADING_DATA,
       fetchErrorMessage: CONSTANTS.MESSAGES.FETCH_LOADING_ERROR,
@@ -105,8 +106,8 @@ export default {
       this.clearData()
       this.$emit('closeDialog')
     },
-    async addNewCourse() {
-      if (!this.$refs.newCourseForm.validate()) {
+    async submitForm() {
+      if (!this.$refs.courseForm.validate()) {
         this.$store.dispatch(
           'snackalert/showErrorSnackbar',
           CONSTANTS.MESSAGES.FORM_ERROR
@@ -115,33 +116,34 @@ export default {
       }
       this.loading = true
       try {
-        this.newCourseData.title = _.capitalize(this.newCourseData.title)
-        const { data } = await this.$axios.post(
-          CONSTANTS.ROUTES.ADMIN.ADD_COURSE,
-          {
-            data: this.newCourseData,
-          }
-        )
+        this.courseData.title = _.capitalize(this.courseData.title)
+        let url
+        if (this.callee === 'add') {
+          url = CONSTANTS.ROUTES.ADMIN.ADD_COURSE
+        } else {
+          url = CONSTANTS.ROUTES.ADMIN.UPDATE_COURSE
+        }
+        const { data } = await this.$axios.post(url, {
+          data: this.courseData,
+        })
         this.$store.dispatch('snackalert/showSuccessSnackbar', data.message)
         this.$emit('reloadData')
-        this.clearData()
+        this.closeDialog()
       } catch (e) {
         let msg
         if (e.response) {
-          msg = e.response.ta.message
+          msg = e.response.data.message
         } else {
           msg = CONSTANTS.MESSAGES.UNKNOWN_ERROR
         }
         this.$store.dispatch('snackalert/showErrorSnackbar', msg)
-        console.log(e)
       }
       this.loading = false
-      // this.closeDialog()
     },
     clearData() {
-      this.newCourseData.title = ''
-      this.newCourseData.description = ''
-      this.newCourseData.subscription = ''
+      this.courseData.title = ''
+      this.courseData.description = ''
+      this.courseData.subscription = ''
     },
   },
 }

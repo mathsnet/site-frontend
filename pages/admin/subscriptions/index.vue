@@ -12,7 +12,7 @@
           :large="large"
           :x-large="xLarge"
           color="primary"
-          @click.stop="openNewSubscriptionDialog"
+          @click.stop="openSubscriptionDialog"
           ><v-icon left>mdi-plus-circle</v-icon>Add New</v-btn
         >
       </div>
@@ -44,8 +44,10 @@
         {{ noData }}
       </div>
     </div>
-    <NewSubscriptionDialog
+    <SubscriptionDialog
       :show-dialog="dialogState"
+      :callee="callee"
+      :subscription-data="subscriptionData"
       @closeDialog="closeDialog"
       @reloadData="$fetch"
     />
@@ -53,14 +55,14 @@
 </template>
 
 <script>
-import NewSubscriptionDialog from '~/components/dialogs/NewSubscriptionDialog'
+import SubscriptionDialog from '~/components/dialogs/SubscriptionDialog'
 import SubscriptionDataCard from '~/components/cards/SubscriptionDataCard'
 import { CONSTANTS } from '~/assets/javascript/constants'
 
 export default {
   middleware: ['authenticate', 'auth-admin'],
   components: {
-    NewSubscriptionDialog,
+    SubscriptionDialog,
     SubscriptionDataCard,
   },
   async fetch() {
@@ -76,6 +78,14 @@ export default {
       fetchPendingMessage: CONSTANTS.MESSAGES.FETCH_LOADING_DATA,
       fetchErrorMessage: CONSTANTS.MESSAGES.FETCH_LOADING_ERROR,
       noData: CONSTANTS.MESSAGES.NO_DATA_TO_DISPLAY,
+      callee: 'add',
+      subscriptionData: {
+        title: null,
+        description: null,
+        duration: null,
+        price: null,
+        id: null,
+      },
     }
   },
   computed: {
@@ -109,18 +119,24 @@ export default {
     },
   },
   methods: {
-    openNewSubscriptionDialog() {
+    openSubscriptionDialog() {
+      this.callee = 'add'
       this.dialogState = true
     },
     closeDialog() {
       this.dialogState = false
     },
-    deleteData({ id }) {
-      console.log(id)
+    deleteData(item) {
+      console.log(item)
     },
-    updateData({ id }) {
-      console.log(id)
+    updateData(item) {
+      this.callee = 'update'
+      this.subscriptionData = item
+      this.dialogState = true
     },
+  },
+  head: {
+    title: "Subscriptions' List",
   },
 }
 </script>

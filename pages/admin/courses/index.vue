@@ -12,7 +12,7 @@
           :large="large"
           :x-large="xLarge"
           color="primary"
-          @click.stop="openNewCourseDialog"
+          @click.stop="openCourseDialog"
           ><v-icon left>mdi-plus-circle</v-icon>Add New</v-btn
         >
       </div>
@@ -29,7 +29,7 @@
         <v-col v-for="(item, i) in courses" :key="i" sm="6" md="4" class="mb-2">
           <CourseDataCard
             :item="item"
-            @deleteData="deleteData($event)"
+            @deleteData="openConfirmationDialog($event)"
             @updateData="updateData($event)"
           />
         </v-col>
@@ -38,22 +38,32 @@
         {{ noData }}
       </div>
     </div>
-    <NewCourseDialog
-      :show-dialog="showNewCourseDialog"
-      @closeDialog="closeNewCourseDialog"
+    <CourseDialog
+      :show-dialog="dialogState"
+      :course-data="courseData"
+      :callee="callee"
+      @closeDialog="closeCourseDialog"
       @reloadData="$fetch"
+    />
+    <ConfirmationDialog
+      :open-dialog="confirmationDialogState"
+      :item="itemToDelete"
+      @YesAnswer="deleteData($event)"
+      @CancelAnswer="confirmationDialogState = false"
     />
   </div>
 </template>
 
 <script>
-import NewCourseDialog from '~/components/dialogs/NewCourseDialog'
+import CourseDialog from '~/components/dialogs/CourseDialog'
 import CourseDataCard from '~/components/cards/CourseDataCard'
 import { CONSTANTS } from '~/assets/javascript/constants'
+import ConfirmationDialog from '~/components/dialogs/ConfirmationDialog'
 export default {
   middleware: ['authenticate', 'auth-admin'],
   components: {
-    NewCourseDialog,
+    ConfirmationDialog,
+    CourseDialog,
     CourseDataCard,
   },
   async fetch() {
@@ -63,10 +73,19 @@ export default {
   data() {
     return {
       courses: [],
-      showNewCourseDialog: false,
+      dialogState: false,
       fetchPendingMessage: CONSTANTS.MESSAGES.FETCH_LOADING_DATA,
       fetchErrorMessage: CONSTANTS.MESSAGES.FETCH_LOADING_ERROR,
       noData: CONSTANTS.MESSAGES.NO_DATA_TO_DISPLAY,
+      courseData: {
+        title: '',
+        description: '',
+        subscription: '',
+        id: null,
+      },
+      callee: 'add',
+      confirmationDialogState: false,
+      itemToDelete: null,
     }
   },
   computed: {
@@ -100,21 +119,34 @@ export default {
     },
   },
   methods: {
-    openNewCourseDialog() {
-      this.showNewCourseDialog = true
+    openConfirmationDialog(data) {
+      this.itemToDelete = data
+      this.confirmationDialogState = true
     },
-    closeNewCourseDialog() {
-      this.showNewCourseDialog = false
+    openCourseDialog() {
+      this.callee = 'add'
+      this.dialogState = true
     },
-    deleteData({ id }) {
-      console.log(id)
+    closeCourseDialog() {
+      this.dialogState = false
     },
-    updateData({ id }) {
-      console.log(id)
+    deleteData(item) {
+      this.confirmationDialogState = false
+      console.log(item)
+    },
+    updateData(item) {
+      this.callee = 'update'
+
+      this.courseData.title = item.title
+      this.courseData.description = item.description
+      this.courseData.subscription = item.subscription.id
+      this.courseData.id = item.id
+
+      this.dialogState = true
     },
   },
   head: {
-    title: 'Courses',
+    title: "Courses' List",
   },
 }
 </script>
