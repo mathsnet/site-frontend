@@ -14,7 +14,7 @@
             ><span class="white--text">DP</span></v-avatar
           >
         </div>
-        <div class="text-center mt-4 mb-6 text-capitalize">
+        <div class="text-center mt-4 mb-6 text-capitalize font-weight-bold">
           <div class="headline primary--text">
             <div v-if="user.first_name && user.last_name">
               {{ user.first_name }}, {{ user.last_name }}
@@ -22,7 +22,6 @@
             <div v-else>{{ user.username }}</div>
           </div>
         </div>
-        {{ user }}
         <v-divider />
       </v-card-text>
     </v-card>

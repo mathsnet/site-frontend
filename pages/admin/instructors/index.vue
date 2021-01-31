@@ -11,18 +11,23 @@
       Error Occurred while loading the data
     </div>
     <div v-else>
-      <v-row>
-        <v-col
-          v-for="(user, i) in instructors"
-          :key="i"
-          cols="12"
-          sm="6"
-          md="4"
-          lg="3"
-        >
-          <UsersDataCard :user="user.profile" />
-        </v-col>
-      </v-row>
+      <div v-if="instructors.length > 0">
+        <v-row>
+          <v-col
+            v-for="(user, i) in instructors"
+            :key="i"
+            cols="12"
+            sm="6"
+            md="4"
+            lg="3"
+          >
+            <UsersDataCard :user="user.profile" />
+          </v-col>
+        </v-row>
+      </div>
+      <div v-else class="mx-auto text-center display-3 font-weight-bold">
+        {{ noData }}
+      </div>
     </div>
     <NewInstructorDialog
       :open-dialog="newInstructorDialogState"
@@ -50,6 +55,7 @@ export default {
     return {
       newInstructorDialogState: false,
       instructors: [],
+      noData: CONSTANTS.MESSAGES.NO_DATA_TO_DISPLAY,
     }
   },
   computed: {},

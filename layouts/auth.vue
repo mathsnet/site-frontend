@@ -1,5 +1,5 @@
 <template>
-  <v-app :style="{ background: $vuetify.theme.themes.light.background }">
+  <v-app :style="{ background: $vuetify.theme.themes.light.secondary }">
     <v-main>
       <v-container fill-height>
         <v-row
