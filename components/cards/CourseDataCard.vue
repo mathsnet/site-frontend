@@ -10,16 +10,26 @@
       <v-card-text> {{ item.description }} </v-card-text>
       <v-divider></v-divider>
       <v-card-actions>
-        <v-rating x-small :length="5" :value="3" color="primary" />
+        <v-rating
+          x-small
+          :length="4"
+          :value="ratingValue"
+          color="amber darken-2"
+        />
         <v-spacer></v-spacer>
         <v-btn
           :x-small="xSmall"
+          :small="$vuetify.breakpoint.mdAndUp"
           outlined
           color="primary"
           @click="updateData(item)"
           >Modify</v-btn
         >
-        <v-btn :x-small="xSmall" color="error" @click="deleteData(item)"
+        <v-btn
+          :x-small="xSmall"
+          :small="$vuetify.breakpoint.mdAndUp"
+          color="error"
+          @click="deleteData(item)"
           >Delete</v-btn
         >
       </v-card-actions>
@@ -28,6 +38,7 @@
 </template>
 
 <script>
+import _ from 'lodash'
 export default {
   name: 'CourseDataList',
   props: {
@@ -39,6 +50,7 @@ export default {
   data() {
     return {
       thumb: '/images/hero_image.png',
+      rating: [1, 2, 3],
     }
   },
   computed: {
@@ -47,6 +59,9 @@ export default {
     },
     xSmall() {
       return this.breakpoint === 'xs'
+    },
+    ratingValue() {
+      return _.sample(this.rating)
     },
   },
   methods: {

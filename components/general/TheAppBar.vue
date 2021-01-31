@@ -25,7 +25,7 @@
         </div>
       </template>
     </v-navigation-drawer>
-    <v-app-bar color="primary" fixed app>
+    <v-app-bar color="primary" fixed flat tile app>
       <v-app-bar-nav-icon class="white--text" @click.stop="drawer = !drawer" />
       <v-toolbar-title class="white--text"
         ><!--<v-btn

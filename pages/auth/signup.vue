@@ -105,13 +105,9 @@ export default {
         const { data } = await this.$axios.post(CONSTANTS.ROUTES.AUTH.SIGNUP, {
           data: this.signupData,
         })
-        // eslint-disable-next-line no-console
-        console.log(data)
         this.$store.dispatch('snackalert/showSuccessSnackbar', data.message)
         this.$router.push({ name: 'auth-login' })
       } catch (e) {
-        // eslint-disable-next-line no-console
-        console.log(e)
         let msg
         if (e.response) {
           msg = e.response.data.message

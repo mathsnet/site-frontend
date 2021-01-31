@@ -1,0 +1,49 @@
+<template>
+  <div>
+    <v-card elevation="5">
+      <v-card-text>
+        <div class="text-center">
+          <v-avatar
+            color="primary"
+            class="white--text"
+            size="150"
+            :style="{
+              border: '2px',
+              borderColor: $vuetify.theme.themes.light.primary,
+            }"
+            ><span class="white--text">DP</span></v-avatar
+          >
+        </div>
+        <div class="text-center mt-4 mb-6 text-capitalize">
+          <div class="headline primary--text">
+            <div v-if="user.first_name && user.last_name">
+              {{ user.first_name }}, {{ user.last_name }}
+            </div>
+            <div v-else>{{ user.username }}</div>
+          </div>
+        </div>
+        {{ user }}
+        <v-divider />
+      </v-card-text>
+    </v-card>
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'UsersDataCard',
+  props: {
+    user: {
+      type: Object,
+      default: () => {},
+    },
+  },
+  data() {
+    return {}
+  },
+  computed: {},
+  methods: {},
+}
+</script>
+
+<style scoped></style>

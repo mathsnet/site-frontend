@@ -1,17 +1,7 @@
 <template>
   <v-app :style="{ background: $vuetify.theme.themes.light.background }">
-    <v-app-bar color="secondary" app>
-      <v-toolbar-title
-        ><!--<v-bt
-          text
-          color="primary"
-          tile
-          plain
-          class="text-capitalize"
-          nuxt
-          to="/"
-          >{{ appName }}</v-bt
-        >-->
+    <v-app-bar color="secondary" flat tile app>
+      <v-toolbar-title>
         <TheSiteLogo />
       </v-toolbar-title>
       <v-spacer></v-spacer>

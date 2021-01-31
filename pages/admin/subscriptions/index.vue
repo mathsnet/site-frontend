@@ -1,25 +1,11 @@
 <template>
   <div>
-    <div class="d-flex">
-      <div
-        class="primary--text font-weight-bold text-h6 text-sm-h4 text-md-h3 mb-5"
-      >
-        Subscriptions
-      </div>
-      <div class="ml-auto">
-        <v-btn
-          :small="small"
-          :large="large"
-          :x-large="xLarge"
-          color="primary"
-          @click.stop="openSubscriptionDialog"
-          ><v-icon left>mdi-plus-circle</v-icon>Add New</v-btn
-        >
-      </div>
-    </div>
-    <v-divider class="mt-7"></v-divider>
+    <TheHeadInfo
+      text="Subscriptions"
+      @openAddNewDialog="openSubscriptionDialog"
+    />
     <div v-if="$fetchState.pending">
-      {{ fetchPendingMessage }}
+      <CircularLoader />
     </div>
     <div v-else-if="$fetchState.error">
       {{ fetchErrorMessage }}
@@ -57,13 +43,17 @@
 <script>
 import SubscriptionDialog from '~/components/dialogs/SubscriptionDialog'
 import SubscriptionDataCard from '~/components/cards/SubscriptionDataCard'
+import CircularLoader from '~/components/loaders/CircularLoader'
 import { CONSTANTS } from '~/assets/javascript/constants'
+import TheHeadInfo from '~/components/general/TheHeadInfo'
 
 export default {
   middleware: ['authenticate', 'auth-admin'],
   components: {
+    TheHeadInfo,
     SubscriptionDialog,
     SubscriptionDataCard,
+    CircularLoader,
   },
   async fetch() {
     const { data } = await this.$axios.get(
@@ -107,11 +97,7 @@ export default {
       }
     },
     xLarge() {
-      if (
-        this.breakPoint === 'md' ||
-        this.breakPoint === 'lg' ||
-        this.breakPoint === 'xl'
-      ) {
+      if (this.$vuetify.breakpoint.mdAndUp) {
         return true
       } else {
         return false
@@ -126,8 +112,26 @@ export default {
     closeDialog() {
       this.dialogState = false
     },
-    deleteData(item) {
-      console.log(item)
+    async deleteData(item) {
+      this.confirmationDialogState = false
+      this.$store.dispatch('actionoverlay/updateOverlayAction', true)
+      try {
+        const { data } = await this.$axios.post(
+          CONSTANTS.ROUTES.ADMIN.DELETE_SUBSCRIPTION,
+          { data: item.id }
+        )
+        this.$store.dispatch('snackalert/showSuccessSnackbar', data.message)
+        this.$fetch()
+      } catch (e) {
+        let msg
+        if (e.response) {
+          msg = e.response.data.message
+        } else {
+          msg = CONSTANTS.MESSAGES.UNKNOWN_ERROR
+        }
+        this.$store.dispatch('snackalert/showErrorSnackbar', msg)
+      }
+      this.$store.dispatch('actionoverlay/updateOverlayAction', false)
     },
     updateData(item) {
       this.callee = 'update'

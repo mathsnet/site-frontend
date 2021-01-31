@@ -1,25 +1,8 @@
 <template>
   <div>
-    <div class="d-flex">
-      <div
-        class="primary--text font-weight-bold text-h6 text-sm-h4 text-md-h3 mb-5"
-      >
-        Courses
-      </div>
-      <div class="ml-auto">
-        <v-btn
-          :small="small"
-          :large="large"
-          :x-large="xLarge"
-          color="primary"
-          @click.stop="openCourseDialog"
-          ><v-icon left>mdi-plus-circle</v-icon>Add New</v-btn
-        >
-      </div>
-    </div>
-    <v-divider class="mb-6"></v-divider>
+    <TheHeadInfo text="Courses" @openAddNewDialog="openCourseDialog" />
     <div v-if="$fetchState.pending">
-      {{ fetchPendingMessage }}
+      <CircularLoader />
     </div>
     <div v-else-if="$fetchState.error">
       {{ fetchErrorMessage }}
@@ -55,16 +38,20 @@
 </template>
 
 <script>
+import { CONSTANTS } from '~/assets/javascript/constants'
 import CourseDialog from '~/components/dialogs/CourseDialog'
 import CourseDataCard from '~/components/cards/CourseDataCard'
-import { CONSTANTS } from '~/assets/javascript/constants'
 import ConfirmationDialog from '~/components/dialogs/ConfirmationDialog'
+import CircularLoader from '~/components/loaders/CircularLoader'
+import TheHeadInfo from '~/components/general/TheHeadInfo'
 export default {
   middleware: ['authenticate', 'auth-admin'],
   components: {
+    TheHeadInfo,
     ConfirmationDialog,
     CourseDialog,
     CourseDataCard,
+    CircularLoader,
   },
   async fetch() {
     const { data } = await this.$axios.get(CONSTANTS.ROUTES.ADMIN.GET_COURSES)
@@ -130,9 +117,26 @@ export default {
     closeCourseDialog() {
       this.dialogState = false
     },
-    deleteData(item) {
+    async deleteData(item) {
       this.confirmationDialogState = false
-      console.log(item)
+      this.$store.dispatch('actionoverlay/updateOverlayAction', true)
+      try {
+        const { data } = await this.$axios.post(
+          CONSTANTS.ROUTES.ADMIN.DELETE_COURSE,
+          { data: item.id }
+        )
+        this.$store.dispatch('snackalert/showSuccessSnackbar', data.message)
+        this.$fetch()
+      } catch (e) {
+        let msg
+        if (e.response) {
+          msg = e.response.data.message
+        } else {
+          msg = CONSTANTS.MESSAGES.UNKNOWN_ERROR
+        }
+        this.$store.dispatch('snackalert/showErrorSnackbar', msg)
+      }
+      this.$store.dispatch('actionoverlay/updateOverlayAction', false)
     },
     updateData(item) {
       this.callee = 'update'

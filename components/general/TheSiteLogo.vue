@@ -1,6 +1,8 @@
 <template>
   <div>
-    <v-img :lazy-src="logoUrl" :src="logoUrl" :width="logoWidth" />
+    <v-btn text plain :to="{ name: 'index' }"
+      ><v-img large :lazy-src="logoUrl" :src="logoUrl" :width="logoWidth"
+    /></v-btn>
   </div>
 </template>
 
