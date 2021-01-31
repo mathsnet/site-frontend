@@ -64,7 +64,7 @@ export default {
         {
           title: 'Dashboard',
           to: { name: 'student-dashboard' },
-          icon: 'mdi-dashboard',
+          icon: 'mdi-view-dashboard-outline',
         },
         {
           title: 'Profile',
@@ -76,7 +76,7 @@ export default {
         {
           title: 'Dashboard',
           to: { name: 'instructor-dashboard' },
-          icon: 'mdi-dashboard',
+          icon: 'mdi-view-dashboard-outline',
         },
       ],
       adminItems: [
@@ -101,11 +101,6 @@ export default {
           icon: 'mdi-badge-account-horizontal-outline',
         },
         {
-          title: 'Levels',
-          to: { name: 'admin-levels' },
-          icon: 'mdi-badge-account-horizontal-outline',
-        },
-        {
           title: 'Past Questions',
           to: { name: 'admin-pq' },
           icon: 'mdi-cast-education',
@@ -119,6 +114,11 @@ export default {
           title: 'Students',
           to: { name: 'admin-students' },
           icon: 'mdi-account-supervisor-outline',
+        },
+        {
+          title: 'Levels',
+          to: { name: 'admin-levels' },
+          icon: 'mdi-badge-account-horizontal-outline',
         },
         {
           title: 'Profile',

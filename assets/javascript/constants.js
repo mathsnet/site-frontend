@@ -19,6 +19,8 @@ export const CONSTANTS = {
       GET_BASIC_REVIEWS: 'admin/get/reviews/basic',
       ADD_INSTRUCTOR: 'admin/add/instructor',
       GET_INSTRUCTORS: 'admin/get/instructors',
+      ADD_STUDENT: 'admin/add/student',
+      GET_STUDENTS: 'admin/get/students',
     },
     STUDENT: {},
     INSTRUCTOR: {},
@@ -48,7 +50,7 @@ export const CONSTANTS = {
     FORM_ERROR: 'Please fill the form properly',
     LOGIN_REQUIRED: 'Please login first before you can access that page',
     ADMIN_REQUIRED: 'Sorry! only super users can access that page',
-    INSTRUCTOR_REQUIRED: 'Sorry! only instructors can access that page',
+    INSTRUCTOR_REQUIRED: 'Sorry! only students can access that page',
     STUDENT_REQUIRED: 'Sorry! only students can access that page',
     ALREADY_LOGIN:
       'Please Logout first before you can have access to that page',

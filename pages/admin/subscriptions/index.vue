@@ -21,7 +21,7 @@
         >
           <SubscriptionDataCard
             :item="item"
-            @deleteData="deleteData($event)"
+            @deleteData="openConfirmationDialog($event)"
             @updateData="updateData($event)"
           />
         </v-col>
@@ -37,6 +37,12 @@
       @closeDialog="closeDialog"
       @reloadData="$fetch"
     />
+    <ConfirmationDialog
+      :open-dialog="confirmationDialogState"
+      :item="itemToDelete"
+      @YesAnswer="deleteData($event)"
+      @CancelAnswer="confirmationDialogState = false"
+    />
   </div>
 </template>
 
@@ -46,10 +52,12 @@ import SubscriptionDataCard from '~/components/cards/SubscriptionDataCard'
 import CircularLoader from '~/components/loaders/CircularLoader'
 import { CONSTANTS } from '~/assets/javascript/constants'
 import TheHeadInfo from '~/components/general/TheHeadInfo'
+import ConfirmationDialog from '~/components/dialogs/ConfirmationDialog'
 
 export default {
   middleware: ['authenticate', 'auth-admin'],
   components: {
+    ConfirmationDialog,
     TheHeadInfo,
     SubscriptionDialog,
     SubscriptionDataCard,
@@ -76,6 +84,8 @@ export default {
         price: null,
         id: null,
       },
+      confirmationDialogState: false,
+      itemToDelete: null,
     }
   },
   computed: {
@@ -105,6 +115,10 @@ export default {
     },
   },
   methods: {
+    openConfirmationDialog(data) {
+      this.itemToDelete = data
+      this.confirmationDialogState = true
+    },
     openSubscriptionDialog() {
       this.callee = 'add'
       this.dialogState = true
