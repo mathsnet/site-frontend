@@ -4,6 +4,7 @@
 
 <script>
 export default {
+  layout: 'homepage',
   head: {
     title: 'Past Questions',
   },

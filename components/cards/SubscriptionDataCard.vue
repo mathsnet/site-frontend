@@ -5,7 +5,7 @@
         src="/images/thumbnail.jpg"
         lazy-src="/images/thumbnail.jpg"
       ></v-img>
-      <v-card-title>{{ item.title }}</v-card-title>
+      <v-card-title class="text-capitalize">{{ item.title }}</v-card-title>
       <v-card-subtitle> &#8358;{{ item.price }}</v-card-subtitle>
       <v-card-text> {{ item.description }} </v-card-text>
       <v-divider></v-divider>

@@ -1,12 +1,19 @@
 <template>
   <div>
     <v-btn text plain :to="{ name: 'index' }"
-      ><v-img large :lazy-src="logoUrl" :src="logoUrl" :width="logoWidth"
+      ><v-img
+        large
+        :alt="altText"
+        :lazy-src="logoUrl"
+        :src="logoUrl"
+        :width="logoWidth"
     /></v-btn>
   </div>
 </template>
 
 <script>
+import { CONSTANTS } from '~/assets/javascript/constants'
+
 export default {
   name: 'TheSiteLogo',
   props: {
@@ -18,6 +25,11 @@ export default {
       type: Number,
       default: 120,
     },
+  },
+  data() {
+    return {
+      altText: CONSTANTS.APP_NAME,
+    }
   },
   computed: {
     logoUrl() {

@@ -30,27 +30,68 @@
         <v-divider> </v-divider>
       </v-col>
     </v-row>
-    <v-row>
-      <v-col v-for="n in 6" :key="n" cols="12">
-        <v-card class="mx-5">
-          <v-card-title>Title</v-card-title>
-          <v-card-text>Text</v-card-text>
-          <v-card-actions>Actions</v-card-actions>
-        </v-card>
+    <v-row
+      v-if="$fetchState.pending"
+      justify="center"
+      align="center"
+      align-content="center"
+    >
+      <v-col cols="12">
+        <CircularLoader />
       </v-col>
     </v-row>
+    <v-row
+      v-else-if="$fetchState.error"
+      justify="center"
+      align="center"
+      align-content="center"
+    >
+      Error Loading Data
+    </v-row>
+    <div v-else class="mx-7 my-7">
+      <div v-if="courses.length > 0">
+        <v-row>
+          <v-col
+            v-for="(course, n) in courses"
+            :key="n"
+            cols="12"
+            sm="6"
+            md="4"
+            lg="3"
+          >
+            <CourseDataCardGeneral :course="course" />
+          </v-col>
+        </v-row>
+        <ThePagination />
+      </div>
+      <div v-else class="text-center font-weight-bold text-h4">
+        No Data To Display Right Now
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 import { CONSTANTS } from '~/assets/javascript/constants'
+import CourseDataCardGeneral from '~/components/cards/CourseDataCardGeneral'
+import CircularLoader from '~/components/loaders/CircularLoader'
+import ThePagination from '~/components/general/ThePagination'
 
 export default {
   layout: 'homepage',
-  components: {},
+  components: {
+    CourseDataCardGeneral,
+    CircularLoader,
+    ThePagination,
+  },
+  async fetch() {
+    const { data } = await this.$axios.get(CONSTANTS.ROUTES.GENERAL.GET_COURSES)
+    this.courses = data.courses
+  },
   data() {
     return {
       displayImage: '/images/hero_image.png',
+      courses: [],
     }
   },
   head: {

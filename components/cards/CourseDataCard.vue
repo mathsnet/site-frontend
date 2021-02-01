@@ -1,12 +1,9 @@
 <template>
   <div>
     <v-card elevation="3">
-      <v-img
-        src="/images/thumbnail.jpg"
-        lazy-src="/images/thumbnail.jpg"
-      ></v-img>
+      <v-img :src="courseImage"></v-img>
       <v-card-title>{{ item.title }}</v-card-title>
-      <v-card-subtitle>{{ item.price }}</v-card-subtitle>
+      <v-card-subtitle>&#8358;{{ item.subscription.price }}</v-card-subtitle>
       <v-card-text> {{ item.description }} </v-card-text>
       <v-divider></v-divider>
       <v-card-actions>
@@ -54,6 +51,13 @@ export default {
     }
   },
   computed: {
+    courseImage() {
+      if (this.item.thumbnail) {
+        return this.item.thumbnail
+      } else {
+        return '/images/thumbnail.jpg'
+      }
+    },
     breakpoint() {
       return this.$vuetify.breakpoint.name
     },

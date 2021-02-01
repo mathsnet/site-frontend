@@ -24,7 +24,9 @@ export const CONSTANTS = {
     },
     STUDENT: {},
     INSTRUCTOR: {},
-    GENERAL: {},
+    GENERAL: {
+      GET_COURSES: 'get/courses',
+    },
     AUTH: {
       LOGIN: 'auth/login',
       SIGNUP: 'auth/signup',
