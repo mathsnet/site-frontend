@@ -116,7 +116,7 @@ export default {
       }
       this.loading = true
       try {
-        this.courseData.title = _.capitalize(this.courseData.title)
+        this.courseData.title = _.upperFirst(this.courseData.title)
         let url
         if (this.callee === 'add') {
           url = CONSTANTS.ROUTES.ADMIN.ADD_COURSE

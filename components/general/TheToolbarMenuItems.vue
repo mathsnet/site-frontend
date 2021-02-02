@@ -17,32 +17,11 @@
       </div>
       <div v-else>
         <!-- User Loggedin -->
-        <v-btn text nuxt :to="dashboard">Dashboard</v-btn>
+        <v-btn text color="primary" nuxt :to="dashboard">Dashboard</v-btn>
         <v-btn icon nuxt :to="{ name: 'auth-logout' }"
           ><v-icon color="primary">mdi-power</v-icon></v-btn
         >
       </div>
-      <v-menu>
-        <!--<template #activator="{ on, attrs }">
-          <v-btn icon rounded v-bind="attrs" color="primary" v-on="on">
-            <v-icon>mdi-dots-vertical</v-icon>
-          </v-btn>
-        </template>-->
-        <v-list>
-          <v-list-item
-            v-for="(item, i) in menuItems"
-            :key="i"
-            text
-            color="primary"
-            nuxt
-            :to="item.to"
-          >
-            <v-list-item-content>
-              <v-list-item-title>{{ item.name }}</v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-        </v-list>
-      </v-menu>
     </div>
     <div v-else>
       <v-menu offset-y>
@@ -59,7 +38,9 @@
             :to="item.to"
           >
             <v-list-item-content>
-              <v-list-item-title>{{ item.name }}</v-list-item-title>
+              <v-list-item-title class="primary--text">{{
+                item.name
+              }}</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
           <div v-if="!$auth.loggedIn">
@@ -109,10 +90,10 @@ export default {
   data() {
     return {
       menuItems: [
-        { name: 'Courses', to: '/courses' },
-        { name: 'Past Questions', to: '/pq' },
-        { name: 'Pricing', to: '/pricing' },
-        { name: 'About', to: '/about' },
+        { name: 'Courses', to: { name: 'courses' } },
+        { name: 'Past Questions', to: { name: 'pq' } },
+        { name: 'Pricing', to: { name: 'pricing' } },
+        { name: 'About', to: { name: 'about' } },
       ],
     }
   },

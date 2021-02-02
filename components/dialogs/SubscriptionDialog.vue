@@ -104,7 +104,7 @@ export default {
       }
       this.loading = true
       try {
-        this.subscriptionData.title = _.capitalize(this.subscriptionData.title)
+        this.subscriptionData.title = _.upperFirst(this.subscriptionData.title)
         let url
         if (this.callee === 'add') {
           url = CONSTANTS.ROUTES.ADMIN.ADD_SUBSCRIPTION

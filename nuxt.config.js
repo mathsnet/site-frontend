@@ -77,7 +77,7 @@ export default {
           warning: 'dca450',
           error: '#ff7159',
           success: '#2ad69b',
-          background: '#f1eeee',
+          background: '#f8f8f8',
         },
       },
     },

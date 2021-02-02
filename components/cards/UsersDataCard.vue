@@ -11,13 +11,15 @@
               border: '2px',
               borderColor: $vuetify.theme.themes.light.primary,
             }"
-            ><span class="white--text">DP</span></v-avatar
+            ><span class="white--tex text-h4 text-md-h2">DP</span></v-avatar
           >
         </div>
-        <div class="text-center mt-4 mb-6 text-capitalize font-weight-bold">
+        <div class="text-center mt-4 mb-6 text-capitalize font-weight-black">
           <div class="headline primary--text">
             <div v-if="user.first_name && user.last_name">
-              {{ user.first_name }}, {{ user.last_name }}
+              <span class="font-weight-bold"
+                >{{ user.first_name }}, {{ user.last_name }}</span
+              >
             </div>
             <div v-else>{{ user.username }}</div>
           </div>

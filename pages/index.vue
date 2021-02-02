@@ -1,7 +1,7 @@
 <template>
   <div class="mb-5">
     <v-sheet color="secondary" class="mt-n5 pt-6 pt-md-3">
-      <v-row justify="center" align="center" class="pt-2 pt-md-1 ml-sm-4 mb-5">
+      <v-row class="mx-2" align="center">
         <v-col cols="12" sm="7" md="5" class="pl-5">
           <div
             class="primary--text display-1 text-sm-h4 text-center text-md-left font-weight-black"
@@ -62,10 +62,9 @@
             <CourseDataCardGeneral :course="course" />
           </v-col>
         </v-row>
-        <ThePagination />
       </div>
       <div v-else class="text-center font-weight-bold text-h4">
-        No Data To Display Right Now
+        No Course Data To Display Right Now
       </div>
     </div>
   </div>
@@ -75,18 +74,18 @@
 import { CONSTANTS } from '~/assets/javascript/constants'
 import CourseDataCardGeneral from '~/components/cards/CourseDataCardGeneral'
 import CircularLoader from '~/components/loaders/CircularLoader'
-import ThePagination from '~/components/general/ThePagination'
 
 export default {
   layout: 'homepage',
   components: {
     CourseDataCardGeneral,
     CircularLoader,
-    ThePagination,
   },
   async fetch() {
     const { data } = await this.$axios.get(CONSTANTS.ROUTES.GENERAL.GET_COURSES)
     this.courses = data.courses
+    // eslint-disable-next-line no-console
+    console.log(this.courses)
   },
   data() {
     return {
