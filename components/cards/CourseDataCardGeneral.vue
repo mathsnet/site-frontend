@@ -8,7 +8,11 @@
       <v-divider />
       <v-card-actions>
         <v-spacer />
-        <v-btn color="primary">Open Course</v-btn>
+        <v-btn
+          color="primary"
+          :to="{ name: 'course-title', params: { title: course.seo_link } }"
+          >Open Course</v-btn
+        >
         <v-spacer />
       </v-card-actions>
     </v-card>

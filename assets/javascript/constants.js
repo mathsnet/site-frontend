@@ -5,6 +5,7 @@ export const CONSTANTS = {
     INSTRUCTOR: '2',
     ADMIN: '3',
   },
+  USER_TYPES_TEXT: ['Student', 'Instructor', 'Admin'],
   ROUTES: {
     BASE_URL: 'http://localhost:5000/api/v1/',
     ADMIN: {
@@ -57,7 +58,7 @@ export const CONSTANTS = {
     ALREADY_LOGIN:
       'Please Logout first before you can have access to that page',
     FETCH_LOADING_ERROR:
-      'Error Occurred while fetching the data. Please reload the page',
+      'Error Occurred while fetching the data. Please use the refresh button to reload the data',
     FETCH_LOADING_SUCCESS: 'Data Fetched successfully',
     FETCH_LOADING_DATA: 'Loading Data.........',
     NO_DATA_TO_DISPLAY: 'SORRY! NO DATA AVAILABLE TO DISPLAY',

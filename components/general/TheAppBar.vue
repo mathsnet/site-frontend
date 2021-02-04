@@ -1,6 +1,23 @@
 <template>
   <div>
     <v-navigation-drawer v-model="drawer" fixed app color="primary" dark>
+      <v-sheet color="secondary" height="210px" class="mb-7 mt-6">
+        <div class="text-center primary--text pt-6">
+          <v-avatar size="100" color="primary">
+            <span class="secondary--text text-h4">DP</span>
+          </v-avatar>
+          <div class="title font-weight-bold">
+            {{ l_.capitalize($auth.user.username) }}
+          </div>
+          <div class="text-caption grey--text mt-n2">
+            {{
+              l_.capitalize(
+                USER_HOLDER[parseInt(this.$auth.user.user_type) - 1]
+              )
+            }}
+          </div>
+        </div>
+      </v-sheet>
       <v-list nav>
         <v-list-item
           v-for="(item, i) in items"
@@ -45,6 +62,7 @@
 </template>
 
 <script>
+import _ from 'lodash'
 import { CONSTANTS } from '~/assets/javascript/constants'
 import TheSiteLogo from '~/components/general/TheSiteLogo'
 
@@ -58,13 +76,25 @@ export default {
   },
   data() {
     return {
+      l_: _,
       drawer: false,
       title: CONSTANTS.APP_NAME,
+      USER_HOLDER: CONSTANTS.USER_TYPES_TEXT,
       studentItems: [
         {
           title: 'Dashboard',
           to: { name: 'student-dashboard' },
           icon: 'mdi-view-dashboard-outline',
+        },
+        {
+          title: 'Courses',
+          to: { name: 'student-courses' },
+          icon: 'mdi-book-open-outline',
+        },
+        {
+          title: 'Subscriptions',
+          to: { name: 'student-subscriptions' },
+          icon: 'mdi-badge-account-horizontal-outline',
         },
         {
           title: 'Profile',
@@ -77,6 +107,16 @@ export default {
           title: 'Dashboard',
           to: { name: 'instructor-dashboard' },
           icon: 'mdi-view-dashboard-outline',
+        },
+        {
+          title: 'Topics',
+          to: { name: 'instructor-topics' },
+          icon: 'mdi-book-open-page-variant-outline',
+        },
+        {
+          title: 'Profile',
+          to: { name: 'profile' },
+          icon: 'mdi-account-circle-outline',
         },
       ],
       adminItems: [

@@ -1,5 +1,7 @@
 <template>
-  <div>Logging Out.............</div>
+  <div class="text-center font-weight-black text-h2 mt-7">
+    Logging Out.............
+  </div>
 </template>
 
 <script>

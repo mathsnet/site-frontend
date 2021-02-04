@@ -5,18 +5,32 @@
       <CircularLoader />
     </div>
     <div v-else-if="$fetchState.error">
-      {{ fetchErrorMessage }}
+      <FetchError @reloadFetch="$fetch" />
     </div>
     <div v-else>
-      <v-row v-if="courses.length > 0">
-        <v-col v-for="(item, i) in courses" :key="i" sm="6" md="4" class="mb-2">
-          <CourseDataCard
-            :item="item"
-            @deleteData="openConfirmationDialog($event)"
-            @updateData="updateData($event)"
+      <div v-if="courses.length > 0">
+        <v-row>
+          <v-col
+            v-for="(item, i) in courses"
+            :key="i"
+            sm="6"
+            md="4"
+            class="mb-2"
+          >
+            <CourseDataCard
+              :item="item"
+              @deleteData="openConfirmationDialog($event)"
+              @updateData="updateData($event)"
+            />
+          </v-col>
+        </v-row>
+        <div class="mt-7">
+          <ThePagination
+            :pagination="pagination"
+            @changePage="moveToPage($event)"
           />
-        </v-col>
-      </v-row>
+        </div>
+      </div>
       <div v-else class="mx-auto text-center display-3 font-weight-bold">
         {{ noData }}
       </div>
@@ -44,22 +58,33 @@ import CourseDataCard from '~/components/cards/CourseDataCard'
 import ConfirmationDialog from '~/components/dialogs/ConfirmationDialog'
 import CircularLoader from '~/components/loaders/CircularLoader'
 import TheHeadInfo from '~/components/general/TheHeadInfo'
+import ThePagination from '~/components/general/ThePagination'
+import FetchError from '~/components/errors/FetchError'
 export default {
   middleware: ['authenticate', 'auth-admin'],
   components: {
+    FetchError,
     TheHeadInfo,
     ConfirmationDialog,
     CourseDialog,
     CourseDataCard,
     CircularLoader,
+    ThePagination,
   },
   async fetch() {
-    const { data } = await this.$axios.get(CONSTANTS.ROUTES.ADMIN.GET_COURSES)
-    this.courses = data.data
+    let page
+    this.pageToGo ? (page = this.pageToGo) : (page = this.$route.query.p)
+    const { data } = await this.$axios.post(
+      CONSTANTS.ROUTES.ADMIN.GET_COURSES,
+      { page }
+    )
+    this.courses = data.courses
+    this.pagination = data.pagination
   },
   data() {
     return {
       courses: [],
+      pagination: {},
       dialogState: false,
       fetchPendingMessage: CONSTANTS.MESSAGES.FETCH_LOADING_DATA,
       fetchErrorMessage: CONSTANTS.MESSAGES.FETCH_LOADING_ERROR,
@@ -73,6 +98,7 @@ export default {
       callee: 'add',
       confirmationDialogState: false,
       itemToDelete: null,
+      pageToGo: null,
     }
   },
   computed: {
@@ -106,6 +132,10 @@ export default {
     },
   },
   methods: {
+    moveToPage({ page }) {
+      this.pageToGo = page
+      this.$fetch()
+    },
     openConfirmationDialog(data) {
       this.itemToDelete = data
       this.confirmationDialogState = true

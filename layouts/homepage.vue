@@ -6,7 +6,7 @@
       </v-toolbar-title>
       <v-spacer></v-spacer>
       <v-btn
-        v-for="(item, i) in menuItems"
+        v-for="(item, i) in menuItemsResponsive"
         :key="i"
         text
         color="primary"
@@ -134,6 +134,9 @@ export default {
     }
   },
   computed: {
+    menuItemsResponsive() {
+      return this.$vuetify.breakpoint.mobile ? [] : this.menuItems
+    },
     dashboard() {
       if (
         this.$auth.user &&

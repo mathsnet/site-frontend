@@ -4,7 +4,9 @@
     <div v-if="$fetchState.pending">
       <CircularLoader />
     </div>
-    <div v-else-if="$fetchState.error">Error Loading Data</div>
+    <div v-else-if="$fetchState.error">
+      <FetchError @reloadFetch="$fetch" />
+    </div>
     <div v-else>
       <v-row align="center" class="mt-5">
         <v-col
@@ -67,12 +69,14 @@
 <script>
 import { CONSTANTS } from '~/assets/javascript/constants'
 import CircularLoader from '~/components/loaders/CircularLoader'
+import FetchError from '~/components/errors/FetchError'
 import TheHeadInfo from '~/components/general/TheHeadInfo'
 export default {
   middleware: ['authenticate', 'auth-admin'],
   components: {
     TheHeadInfo,
     CircularLoader,
+    FetchError,
   },
   async fetch() {
     const { data } = await this.$axios.get(

@@ -23,8 +23,12 @@
         <div class="mx-4 d-flex">
           <span class="text-uppercase font-weight-bold">Courses</span>
           <span class="ml-auto">
-            <v-btn icon><v-icon>mdi-chevron-left</v-icon></v-btn>
-            <v-btn icon><v-icon>mdi-chevron-right</v-icon></v-btn>
+            <v-btn icon
+              ><v-icon color="primary">mdi-chevron-left</v-icon></v-btn
+            >
+            <v-btn icon
+              ><v-icon color="primary">mdi-chevron-right</v-icon></v-btn
+            >
           </span>
         </div>
         <v-divider> </v-divider>
@@ -40,14 +44,9 @@
         <CircularLoader />
       </v-col>
     </v-row>
-    <v-row
-      v-else-if="$fetchState.error"
-      justify="center"
-      align="center"
-      align-content="center"
-    >
-      Error Loading Data
-    </v-row>
+    <div v-else-if="$fetchState.error" class="mx-4">
+      <FetchError :show-img="false" @reloadFetch="$fetch" />
+    </div>
     <div v-else class="mx-7 my-7">
       <div v-if="courses.length > 0">
         <v-row>
@@ -74,23 +73,27 @@
 import { CONSTANTS } from '~/assets/javascript/constants'
 import CourseDataCardGeneral from '~/components/cards/CourseDataCardGeneral'
 import CircularLoader from '~/components/loaders/CircularLoader'
+import FetchError from '~/components/errors/FetchError'
 
 export default {
   layout: 'homepage',
   components: {
     CourseDataCardGeneral,
     CircularLoader,
+    FetchError,
   },
   async fetch() {
-    const { data } = await this.$axios.get(CONSTANTS.ROUTES.GENERAL.GET_COURSES)
+    const { data } = await this.$axios.post(
+      CONSTANTS.ROUTES.GENERAL.GET_COURSES
+    )
     this.courses = data.courses
-    // eslint-disable-next-line no-console
-    console.log(this.courses)
+    this.pagination = data.pagination
   },
   data() {
     return {
       displayImage: '/images/hero_image.png',
       courses: [],
+      pagination: {},
     }
   },
   head: {

@@ -8,24 +8,32 @@
       <CircularLoader />
     </div>
     <div v-else-if="$fetchState.error">
-      {{ fetchErrorMessage }}
+      <FetchError @reloadFetch="$fetch" />
     </div>
     <div v-else>
-      <v-row v-if="subscriptions.length > 0">
-        <v-col
-          v-for="(item, i) in subscriptions"
-          :key="i"
-          sm="6"
-          md="4"
-          class="mb-2"
-        >
-          <SubscriptionDataCard
-            :item="item"
-            @deleteData="openConfirmationDialog($event)"
-            @updateData="updateData($event)"
+      <div v-if="subscriptions.length > 0">
+        <v-row>
+          <v-col
+            v-for="(item, i) in subscriptions"
+            :key="i"
+            sm="6"
+            md="4"
+            class="mb-2"
+          >
+            <SubscriptionDataCard
+              :item="item"
+              @deleteData="openConfirmationDialog($event)"
+              @updateData="updateData($event)"
+            />
+          </v-col>
+        </v-row>
+        <div class="mt-7">
+          <ThePagination
+            :pagination="pagination"
+            @changePage="moveToPage($event)"
           />
-        </v-col>
-      </v-row>
+        </div>
+      </div>
       <div v-else class="text-center display-3 font-weight-bold mx-auto">
         {{ noData }}
       </div>
@@ -53,21 +61,28 @@ import CircularLoader from '~/components/loaders/CircularLoader'
 import { CONSTANTS } from '~/assets/javascript/constants'
 import TheHeadInfo from '~/components/general/TheHeadInfo'
 import ConfirmationDialog from '~/components/dialogs/ConfirmationDialog'
+import FetchError from '~/components/errors/FetchError'
 
 export default {
   middleware: ['authenticate', 'auth-admin'],
+  watchQuery: ['p'],
   components: {
     ConfirmationDialog,
     TheHeadInfo,
     SubscriptionDialog,
     SubscriptionDataCard,
     CircularLoader,
+    FetchError,
   },
   async fetch() {
-    const { data } = await this.$axios.get(
-      CONSTANTS.ROUTES.ADMIN.GET_SUBSCRIPTIONS
+    let page
+    this.pageToGo ? (page = this.pageToGo) : (page = this.$route.query.p)
+    const { data } = await this.$axios.post(
+      CONSTANTS.ROUTES.ADMIN.GET_SUBSCRIPTIONS,
+      { page }
     )
     this.subscriptions = data.subscriptions
+    this.pagination = data.pagination
   },
   data() {
     return {
@@ -86,6 +101,8 @@ export default {
       },
       confirmationDialogState: false,
       itemToDelete: null,
+      pagination: {},
+      pageToGo: null,
     }
   },
   computed: {
@@ -115,6 +132,10 @@ export default {
     },
   },
   methods: {
+    moveToPage({ page }) {
+      this.pageToGo = page
+      this.$fetch()
+    },
     openConfirmationDialog(data) {
       this.itemToDelete = data
       this.confirmationDialogState = true
