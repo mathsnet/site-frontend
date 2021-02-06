@@ -21,7 +21,8 @@
       <v-icon>mdi-chevron-right</v-icon>
     </v-btn>
     <div class="mt-3 text-body-2 text-md-body-1">
-      Showing page {{ pagination.current_page }} of {{ pagination.total_pages }}
+      Showing page {{ pagination.current_page }} out of
+      {{ pagination.total_pages }}
       {{ pagination.total_pages > 1 ? 'pages' : 'page' }}
     </div>
   </div>

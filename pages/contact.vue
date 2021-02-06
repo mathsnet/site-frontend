@@ -6,6 +6,11 @@
 export default {
   name: 'Contact',
   layout: 'homepage',
+  head() {
+    return {
+      title: 'Contact Us',
+    }
+  },
 }
 </script>
 

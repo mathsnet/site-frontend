@@ -82,8 +82,6 @@ export default {
     const { data } = await this.$axios.get(
       CONSTANTS.ROUTES.ADMIN.GET_BASIC_REVIEWS
     )
-    // eslint-disable-next-line no-console
-    console.log(data.data)
     this.counter.courses = data.data.total_courses
     this.counter.sub_level = data.data.total_sub_levels
     this.counter.topics = data.data.total_topics
@@ -113,10 +111,10 @@ export default {
   computed: {
     overviewItems() {
       return [
-        { count: this.counter.topics, text: 'Topics Created' },
-        { count: this.counter.courses, text: 'Courses Created' },
-        { count: this.counter.pq, text: 'Past Questions Created' },
-        { count: this.counter.sub_level, text: 'Subscription Levels Created' },
+        { count: this.counter.topics, text: 'Topics' },
+        { count: this.counter.courses, text: 'Courses' },
+        { count: this.counter.pq, text: 'Past Questions' },
+        { count: this.counter.sub_level, text: 'Subscription Levels' },
       ]
     },
     overviewItems2() {

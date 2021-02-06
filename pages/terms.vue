@@ -6,6 +6,11 @@
 export default {
   name: 'Terms',
   layout: 'homepage',
+  head() {
+    return {
+      title: 'Terms & Condintions',
+    }
+  },
 }
 </script>
 

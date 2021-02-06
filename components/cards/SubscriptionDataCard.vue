@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-card elevation="3">
+    <v-card elevation="3" max-height="400px" min-height="400px">
       <v-img
         src="/images/thumbnail.jpg"
         lazy-src="/images/thumbnail.jpg"

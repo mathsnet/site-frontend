@@ -6,6 +6,11 @@
 export default {
   name: 'Pricing',
   layout: 'homepage',
+  head() {
+    return {
+      title: 'Pricing',
+    }
+  },
 }
 </script>
 

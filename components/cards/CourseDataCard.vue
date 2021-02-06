@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-card elevation="3">
+    <v-card elevation="3" max-height="400px" min-height="400px">
       <v-img :src="courseImage"></v-img>
       <v-card-title>{{ item.title }}</v-card-title>
       <v-card-subtitle>&#8358;{{ item.subscription.price }}</v-card-subtitle>

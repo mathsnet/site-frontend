@@ -5,6 +5,7 @@
 <script>
 export default {
   middleware: ['authenticate', 'auth-student'],
+  async fetch() {},
   data() {
     return {}
   },

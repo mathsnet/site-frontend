@@ -31,6 +31,7 @@ export const formRules = {
     (v) => !!v || 'Subscription Price is required',
     (v) => /\d+/.test(v) || 'Please enter a valid price',
   ],
+  fieldRequired: [(v) => !!v || 'This Field is required'],
 }
 
 // const required = (v, msg) => !!v || msg

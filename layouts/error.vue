@@ -1,17 +1,26 @@
 <template>
-  <v-app dark>
-    <v-main>
-      <v-container>
-        <h1 v-if="error.statusCode === 404">
-          {{ pageNotFound }}
-        </h1>
-        <h1 v-else>
-          {{ otherError }}
-        </h1>
-        <NuxtLink to="/"> Home page </NuxtLink>
-      </v-container>
-    </v-main>
-  </v-app>
+  <div class="mx-5 text-center my-7">
+    <v-row align="center" justify="center" fill-height>
+      <v-col cols="12" md="6">
+        <v-card width="700" flat tile>
+          <v-img :src="errorImage" />
+        </v-card>
+      </v-col>
+    </v-row>
+    <h1 v-if="error.statusCode === 404">
+      {{ pageNotFound }}
+    </h1>
+    <h1 v-else>
+      {{ otherError }}
+    </h1>
+    <v-btn
+      class="mt-3 text-capitalize"
+      color="primary"
+      outlined
+      :to="{ name: 'index' }"
+      >Home Page</v-btn
+    >
+  </div>
 </template>
 
 <script>
@@ -25,6 +34,7 @@ export default {
   },
   data() {
     return {
+      errorImage: '/images/mathsnet_error_image.png',
       pageNotFound: '404 Not Found',
       otherError: 'An error occurred',
     }

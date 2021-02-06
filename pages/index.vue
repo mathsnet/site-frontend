@@ -4,11 +4,14 @@
       <v-row class="mx-2" align="center">
         <v-col cols="12" sm="7" md="5" class="pl-5">
           <div
-            class="primary--text display-1 text-sm-h4 text-center text-md-left font-weight-black"
+            class="primary--text text-h3 text-sm-h4 text-md-h2 text-center text-md-left font-weight-black"
           >
-            LEARN MATH EASILY AND SWIFTLY WITH US
+            <!--LEARN MATH EASILY AND SWIFTLY WITH US -->
+            Learn Maths Easily and Swiftly with Us
           </div>
-          <div class="title text-center text-md-left">
+          <div
+            class="title text-sm-subtitle-1 text-md-h5 mt-2 text-center text-md-left"
+          >
             Learn and understand math easily and quickly using great teaching
             methods
           </div>

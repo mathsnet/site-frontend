@@ -85,8 +85,9 @@ export default {
     },
   },
   async fetch() {
-    const { data } = await this.$axios.get(
-      CONSTANTS.ROUTES.ADMIN.GET_SUBSCRIPTIONS
+    const { data } = await this.$axios.post(
+      CONSTANTS.ROUTES.ADMIN.GET_SUBSCRIPTIONS,
+      { getAll: true }
     )
     this.subscriptions = data.subscriptions
   },
