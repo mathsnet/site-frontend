@@ -1,13 +1,20 @@
 <template>
   <div>
-    <v-card elevation="3" max-height="400px" min-height="400px">
-      <v-img
-        src="/images/thumbnail.jpg"
-        lazy-src="/images/thumbnail.jpg"
-      ></v-img>
+    <v-card elevation="3">
+      <v-img :src="thumbnail" lazy-src="/images/thumbnail.jpg" height="240">
+        <template #placeholder>
+          <v-row class="fill-height ma-0" align="center" justify="center">
+            <v-progress-circular indeterminate color="primary" />
+          </v-row>
+        </template>
+      </v-img>
       <v-card-title class="text-capitalize">{{ item.title }}</v-card-title>
       <v-card-subtitle> &#8358;{{ item.price }}</v-card-subtitle>
-      <v-card-text> {{ item.description }} </v-card-text>
+      <v-card-text>
+        <div :style="{ height: '60px' }">
+          {{ item.description }}
+        </div>
+      </v-card-text>
       <v-divider></v-divider>
       <v-card-actions>
         <v-icon :small="xSmall" color="primary"
@@ -45,6 +52,11 @@ export default {
     return {}
   },
   computed: {
+    thumbnail() {
+      return this.item.thumbnail_link
+        ? this.item.thumbnail_link
+        : '/images/thumbnail.jpg'
+    },
     breakpoint() {
       return this.$vuetify.breakpoint.name
     },

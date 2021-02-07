@@ -1,10 +1,20 @@
 <template>
   <div>
-    <v-card elevation="3" max-height="400px" min-height="400px">
-      <v-img :src="courseImage"></v-img>
+    <v-card elevation="3">
+      <v-img :src="thumbnail" lazy-src="/images/thumbnail.jpg" height="240">
+        <template #placeholder>
+          <v-row class="fill-height ma-0" align="center" justify="center">
+            <v-progress-circular indeterminate color="primary" />
+          </v-row>
+        </template>
+      </v-img>
       <v-card-title>{{ item.title }}</v-card-title>
       <v-card-subtitle>&#8358;{{ item.subscription.price }}</v-card-subtitle>
-      <v-card-text> {{ item.description }} </v-card-text>
+      <v-card-text>
+        <div :style="{ height: '60px' }">
+          {{ item.description }}
+        </div>
+      </v-card-text>
       <v-divider></v-divider>
       <v-card-actions>
         <v-rating
@@ -51,9 +61,9 @@ export default {
     }
   },
   computed: {
-    courseImage() {
-      if (this.item.thumbnail) {
-        return this.item.thumbnail
+    thumbnail() {
+      if (this.item.thumbnail_link) {
+        return this.item.thumbnail_link
       } else {
         return '/images/thumbnail.jpg'
       }

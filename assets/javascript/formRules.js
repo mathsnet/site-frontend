@@ -31,6 +31,10 @@ export const formRules = {
     (v) => !!v || 'Subscription Price is required',
     (v) => /\d+/.test(v) || 'Please enter a valid price',
   ],
+  thumbnailLink: [
+    (v) => !!v || 'This Field is required',
+    (v) => /\w{0,250}/.test(v) || 'Maximum length is 250',
+  ],
   fieldRequired: [(v) => !!v || 'This Field is required'],
 }
 

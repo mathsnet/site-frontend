@@ -93,11 +93,12 @@ export default {
       noData: CONSTANTS.MESSAGES.NO_DATA_TO_DISPLAY,
       callee: 'add',
       subscriptionData: {
-        title: null,
-        description: null,
-        duration: null,
-        price: null,
-        id: null,
+        title: '',
+        description: '',
+        duration: '',
+        price: '',
+        id: '',
+        thumbnail_link: '',
       },
       confirmationDialogState: false,
       itemToDelete: null,
@@ -105,32 +106,7 @@ export default {
       pageToGo: null,
     }
   },
-  computed: {
-    breakPoint() {
-      return this.$vuetify.breakpoint.name
-    },
-    small() {
-      if (this.breakPoint === 'xs') {
-        return true
-      } else {
-        return false
-      }
-    },
-    large() {
-      if (this.breakPoint === 'xs') {
-        return false
-      } else {
-        return true
-      }
-    },
-    xLarge() {
-      if (this.$vuetify.breakpoint.mdAndUp) {
-        return true
-      } else {
-        return false
-      }
-    },
-  },
+  computed: {},
   methods: {
     moveToPage({ page }) {
       this.pageToGo = page

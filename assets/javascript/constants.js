@@ -24,7 +24,12 @@ export const CONSTANTS = {
       GET_STUDENTS: 'admin/get/students',
     },
     STUDENT: {},
-    INSTRUCTOR: {},
+    INSTRUCTOR: {
+      GET_TOPICS: 'instructor/get/topics',
+      ADD_TOPIC: 'instructor/add/topic',
+      UPDATE_TOPIC: 'instructor/update/topic',
+      DELETE_TOPIC: 'instructor/delete/topic',
+    },
     GENERAL: {
       GET_COURSES: 'get/courses',
     },
@@ -62,5 +67,6 @@ export const CONSTANTS = {
     FETCH_LOADING_SUCCESS: 'Data Fetched successfully',
     FETCH_LOADING_DATA: 'Loading Data.........',
     NO_DATA_TO_DISPLAY: 'SORRY! NO DATA AVAILABLE TO DISPLAY',
+    NO_TOPICS_TO_DISPLAY: 'No Topics Data To Display Right Now',
   },
 }

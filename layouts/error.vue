@@ -14,6 +14,13 @@
       {{ otherError }}
     </h1>
     <v-btn
+      class="mt-3 ml-3 text-capitalize"
+      color="primary"
+      outlined
+      @click="$router.go()"
+      >Reload</v-btn
+    >
+    <v-btn
       class="mt-3 text-capitalize"
       color="primary"
       outlined

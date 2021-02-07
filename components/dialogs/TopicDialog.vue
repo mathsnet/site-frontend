@@ -8,7 +8,7 @@
     >
       <v-card>
         <v-card-title class="primary--text">
-          {{ callee === 'update' ? 'Update' : 'Add New' }} Course
+          {{ callee === 'update' ? 'Update' : 'Add New' }} Topic
         </v-card-title>
         <v-card-text>
           <div v-if="$fetchState.pending">
@@ -17,35 +17,30 @@
           <div v-else-if="$fetchState.error">
             {{ fetchErrorMessage }}
           </div>
-          <v-form
-            v-else
-            ref="courseForm"
-            :value="valid"
-            @submit.prevent="submitForm"
-          >
+          <v-form v-else ref="form" :value="valid" @submit.prevent="submitForm">
             <v-text-field
-              v-model="courseData.title"
-              label="Course Title"
-              :rules="rules.newCourseTitle"
+              v-model="topicData.title"
+              label="Topic Title"
+              :rules="rules.fieldRequired"
             ></v-text-field>
             <v-textarea
-              v-model="courseData.description"
-              label="Course Description"
-              :rules="rules.newCourseDescription"
+              v-model="topicData.description"
+              label="Topic Description"
+              :rules="rules.fieldRequired"
             ></v-textarea>
             <v-text-field
-              v-model="courseData.thumbnail_link"
-              label="Course Thumbnail"
+              v-model="topicData.video_link"
+              label="Video Link"
               :rules="rules.thumbnailLink"
               counter="250"
             ></v-text-field>
             <v-select
-              v-model="courseData.subscription"
-              label="Course Subscription Level"
-              :items="subscriptions"
+              v-model="topicData.course"
+              label="Topic Course"
+              :items="courses"
               item-text="title"
               item-value="id"
-              :rules="rules.newCourseLevel"
+              :rules="rules.fieldRequired"
             ></v-select>
             <div class="text-center mt-7">
               <v-btn :loading="loading" color="primary" dark type="submit">{{
@@ -73,7 +68,7 @@ export default {
       type: Boolean,
       default: false,
     },
-    courseData: {
+    topicData: {
       type: Object,
       default: () => {},
     },
@@ -92,10 +87,10 @@ export default {
   },
   async fetch() {
     const { data } = await this.$axios.post(
-      CONSTANTS.ROUTES.ADMIN.GET_SUBSCRIPTIONS,
+      CONSTANTS.ROUTES.GENERAL.GET_COURSES,
       { getAll: true }
     )
-    this.subscriptions = data.subscriptions
+    this.courses = data.courses
   },
   data() {
     return {
@@ -104,7 +99,7 @@ export default {
       loading: false,
       fetchPendingMessage: CONSTANTS.MESSAGES.FETCH_LOADING_DATA,
       fetchErrorMessage: CONSTANTS.MESSAGES.FETCH_LOADING_ERROR,
-      subscriptions: [],
+      courses: [],
     }
   },
   computed: {},
@@ -114,7 +109,7 @@ export default {
       this.$emit('closeDialog')
     },
     async submitForm() {
-      if (!this.$refs.courseForm.validate()) {
+      if (!this.$refs.form.validate()) {
         this.$store.dispatch(
           'snackalert/showErrorSnackbar',
           CONSTANTS.MESSAGES.FORM_ERROR
@@ -123,15 +118,15 @@ export default {
       }
       this.loading = true
       try {
-        this.courseData.title = _.upperFirst(this.courseData.title)
+        this.topicData.title = _.upperFirst(this.topicData.title)
         let url
         if (this.callee === 'add') {
-          url = CONSTANTS.ROUTES.ADMIN.ADD_COURSE
+          url = CONSTANTS.ROUTES.INSTRUCTOR.ADD_TOPIC
         } else {
-          url = CONSTANTS.ROUTES.ADMIN.UPDATE_COURSE
+          url = CONSTANTS.ROUTES.INSTRUCTOR.UPDATE_TOPIC
         }
         const { data } = await this.$axios.post(url, {
-          data: this.courseData,
+          data: this.topicData,
         })
         this.$store.dispatch('snackalert/showSuccessSnackbar', data.message)
         this.$emit('reloadData')
@@ -148,10 +143,10 @@ export default {
       this.loading = false
     },
     clearData() {
-      this.courseData.title = ''
-      this.courseData.description = ''
-      this.courseData.subscription = ''
-      this.courseData.thumbnail_link = ''
+      this.topicData.title = ''
+      this.topicData.description = ''
+      this.topicData.course = ''
+      this.topicData.video_link = ''
     },
   },
 }

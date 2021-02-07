@@ -93,7 +93,8 @@ export default {
         title: '',
         description: '',
         subscription: '',
-        id: null,
+        id: '',
+        thumbnail_link: '',
       },
       callee: 'add',
       confirmationDialogState: false,
@@ -175,6 +176,7 @@ export default {
       this.courseData.description = item.description
       this.courseData.subscription = item.subscription.id
       this.courseData.id = item.id
+      this.courseData.thumbnail_link = item.thumbnail_link
 
       this.dialogState = true
     },

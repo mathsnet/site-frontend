@@ -37,6 +37,12 @@
               label="Subscription Price"
               :rules="rules.newSubscriptionPrice"
               type="number"
+            ></v-text-field
+            ><v-text-field
+              v-model="subscriptionData.thumbnail_link"
+              label="Subscription Thumbnail"
+              :rules="rules.thumbnailLink"
+              counter="250"
             ></v-text-field>
             <div class="text-center mt-7">
               <v-btn :loading="loading" color="primary" type="submit">{{
@@ -116,23 +122,24 @@ export default {
         })
         this.$store.dispatch('snackalert/showSuccessSnackbar', data.message)
         this.$emit('reloadData')
+        this.closeDialog()
       } catch (e) {
         let msg
         if (e.response) {
-          msg = e.response.ta.message
+          msg = e.response.data.message
         } else {
           msg = CONSTANTS.MESSAGES.UNKNOWN_ERROR
         }
         this.$store.dispatch('snackalert/showErrorSnackbar', msg)
       }
       this.loading = false
-      this.closeDialog()
     },
     clearData() {
       this.subscriptionData.title = ''
       this.subscriptionData.description = ''
       this.subscriptionData.duration = ''
       this.subscriptionData.price = ''
+      this.subscriptionData.thumbnail_link = ''
     },
   },
 }

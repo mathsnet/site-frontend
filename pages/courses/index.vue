@@ -7,7 +7,7 @@
             <div
               class="primary--text text-h5 text-md-h3 text-center text-sm-left font-weight-bold"
             >
-              Ready to make your Mathematics learning a beautify one?
+              Ready to make your Mathematics learning a beautiful one?
             </div>
             <div
               class="text-subtitle-2 text-md-h6 text-center text-sm-left mt-4"
@@ -31,7 +31,13 @@
               min-width="300px"
               max-width="500px"
               alt="Display Image"
-            />
+            >
+              <template #placeholder>
+                <v-row class="fill-height ma-0" align="center" justify="center">
+                  <v-progress-circular indeterminate color="primary" />
+                </v-row>
+              </template>
+            </v-img>
           </v-col>
         </v-row>
         <v-row
@@ -56,6 +62,7 @@
           <v-btn
             :small="$vuetify.breakpoint.xsOnly"
             color="primary"
+            depressed
             @click="search"
             >search</v-btn
           >
@@ -156,6 +163,7 @@ export default {
         )
         return
       }
+      // eslint-disable-next-line no-console
       console.log(this.searchItem)
     },
   },

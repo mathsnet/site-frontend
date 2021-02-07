@@ -1,7 +1,13 @@
 <template>
   <div>
     <v-card>
-      <v-img :src="courseImage" />
+      <v-img :src="thumbnail" lazy-src="/images/thumbnail.jpg" height="240">
+        <template #placeholder>
+          <v-row class="fill-height ma-0" align="center" justify="center">
+            <v-progress-circular indeterminate color="primary" />
+          </v-row>
+        </template>
+      </v-img>
       <v-card-title>{{ course.title }}</v-card-title>
       <v-card-subtitle>&#8358;{{ course.subscription.price }}</v-card-subtitle>
       <v-card-text>
@@ -38,9 +44,9 @@ export default {
     cardHeight() {
       return this.$vuetify.breakpoint.smAndUp ? '410px' : '100%'
     },
-    courseImage() {
-      if (this.course.thumbnail) {
-        return this.course.thumbnail
+    thumbnail() {
+      if (this.course.thumbnail_link) {
+        return this.course.thumbnail_link
       } else {
         return '/images/thumbnail.jpg'
       }

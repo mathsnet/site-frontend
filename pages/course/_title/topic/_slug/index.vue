@@ -1,5 +1,7 @@
 <template>
-  <div>Topic Page - {{ $route.params.slug }}</div>
+  <div class="ma-5">
+    Topic Page - {{ $route.params.title }} | {{ $route.params.slug }}
+  </div>
 </template>
 
 <script>
@@ -10,8 +12,10 @@ export default {
   },
   computed: {},
   methods: {},
-  head: {
-    title: 'Topic Page',
+  head() {
+    return {
+      title: `${this.$route.params.slug}`,
+    }
   },
 }
 </script>

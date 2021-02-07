@@ -17,7 +17,13 @@
           </div>
         </v-col>
         <v-col cols="12" sm="5" md="7" class="mt-n9 mt-sm-0">
-          <v-img :src="displayImage"></v-img>
+          <v-img :src="displayImage" :lazy-src="displayImage">
+            <template #placeholder>
+              <v-row class="fill-height ma-0" align="center" justify="center">
+                <v-progress-circular indeterminate color="primary" />
+              </v-row>
+            </template>
+          </v-img>
         </v-col>
       </v-row>
     </v-sheet>
