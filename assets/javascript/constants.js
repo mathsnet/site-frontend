@@ -32,6 +32,9 @@ export const CONSTANTS = {
     },
     GENERAL: {
       GET_COURSES: 'get/courses',
+      GET_COURSE_DATA: 'get/course/data',
+      GET_TOPIC_DATA: 'get/topic/data',
+      UPDATE_PROFILE: 'update/profile',
     },
     AUTH: {
       LOGIN: 'auth/login',

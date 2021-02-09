@@ -2,7 +2,12 @@
   <div class="my-9">
     <v-row v-if="showImg" align="center" justify="center">
       <v-col cols="12" md="6">
-        <v-card width="700" flat tile>
+        <v-card
+          width="700"
+          flat
+          tile
+          style="background-color: transparent !important"
+        >
           <v-img :src="errorImage" />
         </v-card>
       </v-col>

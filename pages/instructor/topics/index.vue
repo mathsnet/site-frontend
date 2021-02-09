@@ -136,6 +136,7 @@ export default {
       this.$fetch()
     },
     openDialog() {
+      this.callee = 'add'
       this.dialogState = true
     },
   },

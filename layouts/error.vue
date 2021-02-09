@@ -2,7 +2,12 @@
   <div class="mx-5 text-center my-7">
     <v-row align="center" justify="center" fill-height>
       <v-col cols="12" md="6">
-        <v-card width="700" flat tile>
+        <v-card
+          width="700"
+          flat
+          tile
+          style="background-color: transparent !important"
+        >
           <v-img :src="errorImage" />
         </v-card>
       </v-col>

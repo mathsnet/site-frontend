@@ -20,7 +20,11 @@ export default {
   css: [],
 
   // Plugins to run before rendering page (https://go.nuxtjs.dev/config-plugins)
-  plugins: [],
+  plugins: [
+    { src: '~/plugins/nuxt-video-player-client.js', mode: 'client' },
+    { src: '~/plugins/core-video-player.js', mode: 'client' },
+    { src: '~/plugins/video-embed-player.js', mode: 'client' },
+  ],
 
   // Auto import components (https://go.nuxtjs.dev/config-components)
   components: true,
