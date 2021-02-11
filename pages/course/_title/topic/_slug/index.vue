@@ -24,6 +24,8 @@ export default {
     options() {
       return {
         language: 'en',
+        height: '100%',
+        width: '100%',
         sources: [
           {
             src:

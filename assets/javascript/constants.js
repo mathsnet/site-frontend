@@ -34,6 +34,7 @@ export const CONSTANTS = {
       GET_COURSES: 'get/courses',
       GET_COURSE_DATA: 'get/course/data',
       GET_TOPIC_DATA: 'get/topic/data',
+      GET_RANDOM_COURSES: 'get/random/courses',
       UPDATE_PROFILE: 'update/profile',
     },
     AUTH: {
@@ -71,5 +72,7 @@ export const CONSTANTS = {
     FETCH_LOADING_DATA: 'Loading Data.........',
     NO_DATA_TO_DISPLAY: 'SORRY! NO DATA AVAILABLE TO DISPLAY',
     NO_TOPICS_TO_DISPLAY: 'No Topics Data To Display Right Now',
+    COURSE_NOT_FOUND: "Oops! We can't find the course you're looking for",
+    TOPIC_NOT_FOUND: "Oops! We can't find the topic you're looking for",
   },
 }

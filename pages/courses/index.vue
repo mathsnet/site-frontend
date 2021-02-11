@@ -156,7 +156,7 @@ export default {
       this.$fetch()
     },
     search() {
-      if (!this.$ref.searchForm.validate()) {
+      if (!this.$refs.searchForm.validate()) {
         this.$store.dispatch(
           'snackalert/showErrorSnackbar',
           CONSTANTS.MESSAGES.FORM_ERROR

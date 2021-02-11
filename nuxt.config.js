@@ -42,7 +42,12 @@ export default {
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
     '@nuxtjs/auth-next',
+    '@nuxtjs/cloudinary',
   ],
+  cloudinary: {
+    cloudName: process.env.CLOUDINARY_CLOUD_NAME || 'rastaarc',
+    useComponent: true,
+  },
   auth: {
     strategies: {
       local: {
