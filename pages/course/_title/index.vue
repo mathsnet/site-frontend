@@ -7,7 +7,7 @@
       <FetchError @reloadFetch="$fetch" />
     </div>
     <div v-else>
-      <div v-if="!l_.isEmpty(courseData)">
+      <div v-if="!coursesEmpty">
         <v-breadcrumbs>
           <v-breadcrumbs-item
             ><v-btn
@@ -22,9 +22,9 @@
           >
           /
           <v-breadcrumbs-item
-            ><v-btn text tile disabled class="text-capitalize">{{
-              pageTitle
-            }}</v-btn></v-breadcrumbs-item
+            ><v-btn text tile disabled class="text-capitalize">
+              {{ courseTitle }}
+            </v-btn></v-breadcrumbs-item
           >
         </v-breadcrumbs>
         <v-card
@@ -55,7 +55,7 @@
                       <v-expansion-panel-header
                         class="text-title font-weight-bold"
                       >
-                        {{ l_.startCase(courseData.title) }}
+                        {{ courseTitle }}
                         <template #actions>
                           <v-icon color="primary"> $expand </v-icon>
                         </template>
@@ -74,7 +74,7 @@
                 <!-- desktop -->
                 <div v-else>
                   <div class="text-md-h5 font-weight-bold">
-                    {{ l_.startCase(courseData.title) }}
+                    {{ courseTitle }}
                   </div>
                   <div class="text-caption mb-4 mt-3">
                     <v-chip color="primary"
@@ -92,7 +92,16 @@
           justify="center"
           align="center"
         >
-          <v-btn color="primary">Enroll Now </v-btn>
+          <div v-if="parseInt(courseData.subscription.price) > 0">
+            <div v-if="!canViewCourse">
+              <v-btn color="primary">Add Course </v-btn>
+            </div>
+            <div v-else>
+              <div v-if="!$auth.loggedIn">
+                PLEASE SIGNUP/LOGIN FIRST IN ORDER TO ADD THIS COURSE
+              </div>
+            </div>
+          </div>
         </v-row>
         <v-row justify="center" class="mt-5">
           <v-col cols="12" md="8">
@@ -113,9 +122,24 @@
                           <v-icon color="primary"> $expand </v-icon>
                         </template>
                       </v-expansion-panel-header>
-                      <v-expansion-panel-content
-                        class="text-caption text-md-h6"
-                        >{{ topic.description }}</v-expansion-panel-content
+                      <v-expansion-panel-content class="text-caption text-md-h6"
+                        ><div>{{ topic.description }}</div>
+                        <div class="d-flex">
+                          <v-spacer /><v-btn
+                            v-if="canViewCourse"
+                            text
+                            plain
+                            color="primary"
+                            :to="{
+                              name: 'course-title-topic-slug',
+                              params: {
+                                slug: topic.seo_link,
+                                title: topic.course.title,
+                              },
+                            }"
+                            >View Topic</v-btn
+                          >
+                        </div></v-expansion-panel-content
                       >
                     </v-expansion-panel>
                   </v-expansion-panels>
@@ -167,6 +191,7 @@ import { CONSTANTS } from '~/assets/javascript/constants'
 import CircularLoader from '~/components/loaders/CircularLoader'
 import FetchError from '~/components/errors/FetchError'
 import CourseDataCardGeneral from '~/components/cards/CourseDataCardGeneral'
+
 export default {
   layout: 'homepage',
   components: {
@@ -184,25 +209,17 @@ export default {
       }
     )
     if (data.message) {
-      if (process.server) {
-        this.$nuxt.context.res.statusCode = 404
-        throw new Error(data.message)
-      } else {
-        this.$store.dispatch('snackalert/showErrorSnackbar', data.message)
-        await this.$router.push({ name: 'courses' })
-      }
+      this.$store.dispatch('snackalert/showErrorSnackbar', data.message)
+      // this.$router.push({ name: 'courses' })
     }
     this.courseData = data.course
-    this.pageTitle = _.startCase(this.courseData.title)
     await this.loadTopics(this.courseData.id)
     await this.loadOtherCourses(this.courseData.id)
   },
   data() {
     return {
       courseData: {},
-      pageTitle: 'loading',
       messages: CONSTANTS.MESSAGES,
-      l_: _,
       topics: [],
       otherCourses: [],
       topicsLoading: true,
@@ -210,22 +227,25 @@ export default {
     }
   },
   computed: {
-    breadcrumbsItems() {
-      return [
-        {
-          text: 'Courses',
-          href: 'courses',
-          disabled: false,
-        },
-        {
-          text: this.pageTitle,
-          href: null,
-          disabled: true,
-        },
-      ]
+    canViewCourse() {
+      if (!this.$auth.loggedIn) {
+        return false
+      } else if (
+        this.$auth.loggedIn &&
+        this.$auth.user.user_type === CONSTANTS.USER_TYPES.STUDENT
+      ) {
+        return false
+      } else {
+        return true
+      }
     },
-    courseName() {
-      return this.pageTitle
+    coursesEmpty() {
+      return _.isEmpty(this.courseData)
+    },
+    courseTitle() {
+      return this.courseData.title
+        ? _.startCase(this.courseData.title)
+        : 'Loading'
     },
     courseImage() {
       return this.courseData.thumbnail_link
@@ -273,7 +293,7 @@ export default {
   },
   head() {
     return {
-      title: `${this.pageTitle}`,
+      title: `${this.courseTitle}`,
     }
   },
 }

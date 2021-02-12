@@ -85,6 +85,8 @@ export default {
     this.counter.courses = data.data.total_courses
     this.counter.sub_level = data.data.total_sub_levels
     this.counter.topics = data.data.total_topics
+    this.counter.students = data.data.total_students
+    this.counter.instructors = data.data.total_instructors
   },
   data() {
     return {
@@ -99,12 +101,16 @@ export default {
         'red darken-4',
         'green lighten-1',
         'amber darken-4',
+        'teal darken-3',
+        'green darken-2',
       ],
       counter: {
         courses: 0,
         topics: 0,
         pq: 0,
         sub_level: 0,
+        students: 0,
+        instructors: 0,
       },
     }
   },
@@ -115,6 +121,8 @@ export default {
         { count: this.counter.courses, text: 'Courses' },
         { count: this.counter.pq, text: 'Past Questions' },
         { count: this.counter.sub_level, text: 'Subscription Levels' },
+        { count: this.counter.students, text: 'Students' },
+        { count: this.counter.instructors, text: 'Instructors' },
       ]
     },
     overviewItems2() {
