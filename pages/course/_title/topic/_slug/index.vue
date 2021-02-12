@@ -5,7 +5,6 @@
 
     <vue-core-video-player :src="options.sources[0].src" />
     <video-embed :src="options.sources[1].src" />
-    <video-embed :src="options.sources[0].src" />
   </div>
 </template>
 
