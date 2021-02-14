@@ -9,7 +9,11 @@
         </template>
       </v-img>
       <v-card-title>{{ course.title }}</v-card-title>
-      <v-card-subtitle>&#8358;{{ course.subscription.price }}</v-card-subtitle>
+      <v-card-subtitle
+        ><v-chip color="primary">{{
+          course.subscription.title
+        }}</v-chip></v-card-subtitle
+      >
       <v-card-text>
         <div :style="{ height: '60px' }">
           {{ courseDescription }}

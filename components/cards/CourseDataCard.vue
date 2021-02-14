@@ -9,7 +9,11 @@
         </template>
       </v-img>
       <v-card-title>{{ item.title }}</v-card-title>
-      <v-card-subtitle>&#8358;{{ item.subscription.price }}</v-card-subtitle>
+      <v-card-subtitle
+        ><v-chip color="primary">{{
+          item.subscription.title
+        }}</v-chip></v-card-subtitle
+      >
       <v-card-text>
         <div :style="{ height: '60px' }">
           {{ item.description }}

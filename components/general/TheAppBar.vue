@@ -81,11 +81,11 @@ export default {
       title: CONSTANTS.APP_NAME,
       USER_HOLDER: CONSTANTS.USER_TYPES_TEXT,
       studentItems: [
-        {
+        /* {
           title: 'Dashboard',
           to: { name: 'student-dashboard' },
           icon: 'mdi-view-dashboard-outline',
-        },
+        }, */
         {
           title: 'Courses',
           to: { name: 'student-courses' },
@@ -103,11 +103,11 @@ export default {
         },
       ],
       instructorItems: [
-        {
+        /* {
           title: 'Dashboard',
           to: { name: 'instructor-dashboard' },
           icon: 'mdi-view-dashboard-outline',
-        },
+        }, */
         {
           title: 'Topics',
           to: { name: 'instructor-topics' },

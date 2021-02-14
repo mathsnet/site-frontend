@@ -62,9 +62,9 @@
                       </v-expansion-panel-header>
                       <v-expansion-panel-content>
                         <div class="text-caption mb-3">
-                          <v-chip color="primary"
-                            >&#8358;{{ courseData.subscription.price }}</v-chip
-                          >
+                          <v-chip color="primary">{{
+                            courseData.subscription.title
+                          }}</v-chip>
                         </div>
                         {{ courseData.description }}</v-expansion-panel-content
                       >
@@ -77,9 +77,9 @@
                     {{ courseTitle }}
                   </div>
                   <div class="text-caption mb-4 mt-3">
-                    <v-chip color="primary"
-                      >&#8358;{{ courseData.subscription.price }}</v-chip
-                    >
+                    <v-chip color="primary">{{
+                      courseData.subscription.title
+                    }}</v-chip>
                   </div>
                   <div class="text-body-1">{{ courseData.description }}</div>
                 </div>
@@ -93,12 +93,17 @@
           align="center"
         >
           <div v-if="parseInt(courseData.subscription.price) > 0">
-            <div v-if="!canViewCourse">
-              <v-btn color="primary">Add Course </v-btn>
+            <div v-if="!$auth.loggedIn" class="font-weight-bold error--text">
+              PLEASE SIGNUP/LOGIN FIRST IN ORDER TO ADD THIS COURSE
             </div>
             <div v-else>
-              <div v-if="!$auth.loggedIn">
-                PLEASE SIGNUP/LOGIN FIRST IN ORDER TO ADD THIS COURSE
+              <div v-if="!canViewCourse">
+                <v-btn
+                  color="primary"
+                  :loading="addCourseLoading"
+                  @click="addCourse"
+                  >Add Course
+                </v-btn>
               </div>
             </div>
           </div>
@@ -122,8 +127,9 @@
                           <v-icon color="primary"> $expand </v-icon>
                         </template>
                       </v-expansion-panel-header>
-                      <v-expansion-panel-content class="text-caption text-md-h6"
-                        ><div>{{ topic.description }}</div>
+                      <v-expansion-panel-content
+                        class="text-caption text-md-h6"
+                      >
                         <div class="d-flex">
                           <v-spacer /><v-btn
                             v-if="canViewCourse"
@@ -134,13 +140,14 @@
                               name: 'course-title-topic-slug',
                               params: {
                                 slug: topic.seo_link,
-                                title: topic.course.title,
+                                title: topic.course.seo_link,
                               },
                             }"
                             >View Topic</v-btn
                           >
-                        </div></v-expansion-panel-content
-                      >
+                        </div>
+                        <div>{{ topic.description }}</div>
+                      </v-expansion-panel-content>
                     </v-expansion-panel>
                   </v-expansion-panels>
                 </div>
@@ -210,7 +217,7 @@ export default {
     )
     if (data.message) {
       this.$store.dispatch('snackalert/showErrorSnackbar', data.message)
-      // this.$router.push({ name: 'courses' })
+      this.$router.push({ name: 'courses' })
     }
     this.courseData = data.course
     await this.loadTopics(this.courseData.id)
@@ -224,6 +231,7 @@ export default {
       otherCourses: [],
       topicsLoading: true,
       otherCoursesLoading: true,
+      addCourseLoading: false,
     }
   },
   computed: {
@@ -254,11 +262,19 @@ export default {
     },
   },
   methods: {
+    addCourse() {
+      this.addCourseLoading = true
+      setTimeout(() => (this.addCourseLoading = false), 7000)
+    },
     async loadTopics(courseId) {
       try {
         const { data } = await this.$axios.post(
           CONSTANTS.ROUTES.GENERAL.GET_TOPIC_DATA,
-          { data: courseId }
+          {
+            data: {
+              course_id: courseId,
+            },
+          }
         )
         this.topics = data.topics
       } catch (e) {

@@ -8,6 +8,7 @@
 </template>
 
 <script>
+import 'video.js/dist/video-js.css'
 export default {
   props: {
     playerOptions: {

@@ -1,47 +1,294 @@
 <template>
   <div class="ma-5">
-    Topic Page - {{ $route.params.title }} | {{ $route.params.slug }}
-    <VideoPlayer :player-options="options" />
+    <div v-if="$fetchState.pending">
+      <CircularLoader />
+    </div>
+    <div v-else-if="$fetchState.error">
+      <FetchError @reloadFetch="$fetch" />
+    </div>
+    <div v-else>
+      <div v-if="topicAvailable">
+        <v-breadcrumbs>
+          <v-breadcrumbs-item
+            ><v-btn
+              text
+              tile
+              plain
+              color="primary"
+              :to="{ name: 'courses' }"
+              class="text-capitalize"
+              >Courses</v-btn
+            ></v-breadcrumbs-item
+          >
+          /
+          <v-breadcrumbs-item
+            ><v-btn text tile disabled class="text-capitalize">
+              {{ courseTitle }}
+            </v-btn></v-breadcrumbs-item
+          >
+        </v-breadcrumbs>
+        <div style="max-width: 100%; min-width: 100%">
+          <VideoPlayer :player-options="options" />
+        </div>
 
-    <vue-core-video-player :src="options.sources[0].src" />
-    <video-embed :src="options.sources[1].src" />
+        <!--<vue-core-video-player :src="options.sources[0].src" />
+        <video-embed :src="options.sources[1].src" />-->
+        <div class="mt-7">
+          <v-expansion-panels>
+            <v-expansion-panel>
+              <v-expansion-panel-header class="text-md-h6 text-title"
+                >Description</v-expansion-panel-header
+              >
+              <v-expansion-panel-content>{{
+                currentTopic.description
+              }}</v-expansion-panel-content>
+            </v-expansion-panel>
+          </v-expansion-panels>
+        </div>
+        <div>
+          <v-row justify="center" class="mt-5">
+            <v-col cols="12" md="8">
+              <div
+                class="text-title text-md-h5 font-weight-bold text-uppercase"
+              >
+                Course Topics
+              </div>
+              <div>
+                <div v-if="topicsLoading">
+                  <v-progress-circular indeterminate color="primary" />
+                </div>
+                <div v-else>
+                  <div v-if="topics.length > 0">
+                    <v-expansion-panels>
+                      <v-expansion-panel v-for="(topic, i) in topics" :key="i">
+                        <v-expansion-panel-header
+                          v-if="topic.seo_link === $route.params.slug"
+                          class="font-weight-bold primary--text"
+                          >{{ topic.title }}
+                          <template #actions>
+                            <v-icon color="primary"> $expand </v-icon>
+                          </template>
+                        </v-expansion-panel-header>
+                        <v-expansion-panel-header
+                          v-else
+                          class="font-weight-bold"
+                          >{{ topic.title }}
+                        </v-expansion-panel-header>
+                        <v-expansion-panel-content
+                          class="text-caption text-md-h6"
+                        >
+                          <div class="d-flex">
+                            <v-spacer /><v-btn
+                              v-if="topic.seo_link !== $route.params.slug"
+                              text
+                              plain
+                              color="primary"
+                              :to="{
+                                name: 'course-title-topic-slug',
+                                params: {
+                                  slug: topic.seo_link,
+                                  title: topic.course.seo_link,
+                                },
+                              }"
+                              >View Topic</v-btn
+                            >
+                          </div>
+                          <div>{{ topic.description }}</div>
+                        </v-expansion-panel-content>
+                      </v-expansion-panel>
+                    </v-expansion-panels>
+                  </div>
+                  <div
+                    v-else
+                    class="mt-4 font-weight-bold text-md-h5 text-title text-uppercase text-center"
+                  >
+                    No Topics for this course yet. Check back later
+                  </div>
+                </div>
+              </div>
+            </v-col>
+            <v-col cols="12" md="4">
+              <div
+                class="text-title text-md-h5 font-weight-bold text-center text-uppercase"
+              >
+                Other Courses
+              </div>
+              <div v-if="otherCoursesLoading" class="text-center">
+                <v-progress-circular indeterminate color="primary" />
+              </div>
+              <div v-else>
+                <div v-if="otherCourses.length > 0">
+                  <div
+                    v-for="(course, i) in otherCourses"
+                    :key="i"
+                    class="mb-4"
+                  >
+                    <CourseDataCardGeneral :course="course" />
+                  </div>
+                </div>
+                <div
+                  v-else
+                  class="mt-4 font-weight-bold text-md-h5 text-title text-uppercase text-center"
+                >
+                  No other courses yet. Check back later
+                </div>
+              </div>
+            </v-col>
+          </v-row>
+        </div>
+      </div>
+      <div v-else>
+        <GeneralError msg="Invalid Topic Request" :show-reload="false" />
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-import 'video.js/dist/video-js.css'
+import _ from 'lodash'
 import VideoPlayer from '~/components/video/VideoPlayer'
+import CircularLoader from '~/components/loaders/CircularLoader'
+import FetchError from '~/components/errors/FetchError'
+import { CONSTANTS } from '~/assets/javascript/constants'
+import GeneralError from '~/components/errors/GeneralError'
+
 export default {
   layout: 'homepage',
+  middleware: ['authenticate', 'auth-canview-topic'],
   components: {
+    GeneralError,
     VideoPlayer,
+    CircularLoader,
+    FetchError,
+  },
+  async fetch() {
+    const { data } = await this.$axios.post(
+      CONSTANTS.ROUTES.GENERAL.GET_COURSE_DATA,
+      {
+        data: {
+          course_seo_link: this.$route.params.title,
+        },
+      }
+    )
+    if (data.message) {
+      this.$store.dispatch('snackalert/showErrorSnackbar', data.message)
+      this.$router.push({ name: 'courses' })
+    }
+    this.courseData = data.course
+
+    const res = await this.$axios.post(
+      CONSTANTS.ROUTES.GENERAL.GET_TOPIC_DATA,
+      {
+        data: {
+          course_id: this.courseData.id,
+          topic_seo_link: this.$route.params.slug,
+        },
+      }
+    )
+    if (res.data.message) {
+      this.$store.dispatch('snackalert/showErrorSnackbar', res.data.message)
+      this.topicAvailable = false
+      await this.$router.push({
+        name: 'course-title',
+        params: { title: this.courseData.seo_link },
+      })
+    }
+
+    await this.loadTopics(this.courseData.id)
+    await this.loadOtherCourses(this.courseData.id)
   },
   data() {
-    return {}
+    return {
+      courseData: {},
+      messages: CONSTANTS.MESSAGES,
+      topics: [],
+      otherCourses: [],
+      topicsLoading: true,
+      otherCoursesLoading: true,
+      addCourseLoading: false,
+      topicAvailable: true,
+    }
   },
   computed: {
     options() {
       return {
         language: 'en',
-        height: '100%',
-        width: '100%',
+        fluid: true,
+        responsive: true,
         sources: [
           {
-            src:
-              'https://res.cloudinary.com/rastaarc/video/upload/v1612834225/ts_afpof2.mp4',
+            src: this.currentTopic.video_link,
           },
           {
-            src:
-              'https://www.youtube.com/watch?v=oBcRhrHb2Go&ab_channel=TopTipsGraphics',
+            src: this.currentTopic.video_link,
           },
         ],
       }
     },
+    courseTitle() {
+      return this.courseData.title
+        ? _.startCase(this.courseData.title)
+        : 'Loading'
+    },
+    currentTopic() {
+      if (this.topics.length > 0) {
+        return this.topics.filter(
+          (topic) => topic.seo_link === this.$route.params.slug
+        )[0]
+      } else {
+        return {}
+      }
+    },
+    topicTitle() {
+      if (!this.topicAvailable) return 'Unknown'
+      return this.currentTopic.title ? this.currentTopic.title : 'Loading'
+    },
   },
-  methods: {},
+  methods: {
+    async loadTopics(courseId) {
+      try {
+        const { data } = await this.$axios.post(
+          CONSTANTS.ROUTES.GENERAL.GET_TOPIC_DATA,
+          {
+            data: {
+              course_id: courseId,
+            },
+          }
+        )
+        this.topics = data.topics
+      } catch (e) {
+        let msg
+        if (e.response) {
+          msg = e.response.data.message
+        } else {
+          msg = CONSTANTS.MESSAGES.UNKNOWN_ERROR
+        }
+        this.$store.dispatch('snackalert/showErrorSnackbar', msg)
+      }
+      this.topicsLoading = false
+    },
+    async loadOtherCourses(courseId) {
+      try {
+        const { data } = await this.$axios.post(
+          CONSTANTS.ROUTES.GENERAL.GET_RANDOM_COURSES,
+          { data: courseId }
+        )
+        this.otherCourses = data.courses
+      } catch (e) {
+        let msg
+        if (e.response) {
+          msg = e.response.data.message
+        } else {
+          msg = CONSTANTS.MESSAGES.UNKNOWN_ERROR
+        }
+        this.$store.dispatch('snackalert/showErrorSnackbar', msg)
+      }
+      this.otherCoursesLoading = false
+    },
+  },
   head() {
     return {
-      title: `${this.$route.params.slug}`,
+      title: `${this.topicTitle}`,
     }
   },
 }

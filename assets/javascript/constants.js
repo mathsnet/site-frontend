@@ -74,5 +74,9 @@ export const CONSTANTS = {
     NO_TOPICS_TO_DISPLAY: 'No Topics Data To Display Right Now',
     COURSE_NOT_FOUND: "Oops! We can't find the course you're looking for",
     TOPIC_NOT_FOUND: "Oops! We can't find the topic you're looking for",
+    NO_ACCESS_TO_TOPIC:
+      "Oops! You don't have access to view that course contents",
+    GENERAL_ERROR_MESSAGE:
+      'Oops! Something went wrong with your request. please try again',
   },
 }
