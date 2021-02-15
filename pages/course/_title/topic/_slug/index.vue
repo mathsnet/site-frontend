@@ -33,17 +33,8 @@
 
         <!--<vue-core-video-player :src="options.sources[0].src" />
         <video-embed :src="options.sources[1].src" />-->
-        <div class="mt-7">
-          <v-expansion-panels>
-            <v-expansion-panel>
-              <v-expansion-panel-header class="text-md-h6 text-title"
-                >Description</v-expansion-panel-header
-              >
-              <v-expansion-panel-content>{{
-                currentTopic.description
-              }}</v-expansion-panel-content>
-            </v-expansion-panel>
-          </v-expansion-panels>
+        <div class="mt-7 mb-3 font-weight-bold primary--text">
+          {{ currentTopic.title }}
         </div>
         <div>
           <v-row justify="center" class="mt-5">

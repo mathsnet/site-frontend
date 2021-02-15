@@ -4,7 +4,18 @@
       <v-sheet color="secondary" height="210px" class="mb-7 mt-6">
         <div class="text-center primary--text pt-6">
           <v-avatar size="100" color="primary">
-            <span class="secondary--text text-h4">DP</span>
+            <span
+              v-if="!dpAvailable"
+              class="text-center secondary--text text-h4"
+              >DP</span
+            >
+            <v-img v-else :src="profileDP">
+              <template #placeholder>
+                <v-row justify="center" align="center" class="fill-height">
+                  <v-progress-circular indeterminate />
+                </v-row>
+              </template>
+            </v-img>
           </v-avatar>
           <div class="title font-weight-bold">
             {{ l_.capitalize($auth.user.username) }}
@@ -130,16 +141,11 @@ export default {
           to: { name: 'admin-courses' },
           icon: 'mdi-book-open-outline',
         },
-        {
+        /* {
           title: 'Topics',
           to: { name: 'admin-topics' },
           icon: 'mdi-book-open-page-variant-outline',
-        },
-        {
-          title: 'Subscriptions',
-          to: { name: 'admin-subscriptions' },
-          icon: 'mdi-badge-account-horizontal-outline',
-        },
+        }, */
         {
           title: 'Past Questions',
           to: { name: 'admin-pq' },
@@ -156,8 +162,13 @@ export default {
           icon: 'mdi-account-supervisor-outline',
         },
         {
-          title: 'Levels',
-          to: { name: 'admin-levels' },
+          title: 'Subscriptions',
+          to: { name: 'admin-subscriptions' },
+          icon: 'mdi-badge-account-horizontal-outline',
+        },
+        {
+          title: 'Payments',
+          to: { name: 'admin-payments' },
           icon: 'mdi-badge-account-horizontal-outline',
         },
         {
@@ -169,6 +180,12 @@ export default {
     }
   },
   computed: {
+    profileDP() {
+      return this.$auth.user.dp_link
+    },
+    dpAvailable() {
+      return !!this.profileDP
+    },
     isAdmin() {
       if (this.$auth.user.user_type === CONSTANTS.USER_TYPES.ADMIN) return true
       return false

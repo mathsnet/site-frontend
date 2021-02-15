@@ -36,6 +36,8 @@ export const CONSTANTS = {
       GET_TOPIC_DATA: 'get/topic/data',
       GET_RANDOM_COURSES: 'get/random/courses',
       UPDATE_PROFILE: 'update/profile',
+      GET_SUBSCRIPTIONS_DATA: 'get/subscriptions/data',
+      UPDATE_DP_LINK: 'update/dp/link',
     },
     AUTH: {
       LOGIN: 'auth/login',
@@ -44,6 +46,8 @@ export const CONSTANTS = {
       USER: 'auth/get-user',
     },
   },
+  ALLOWED_EXTENSIONS_FOR_DP: ['jpeg', 'jpg', 'png'],
+  ALLOWED_FILE_SIZE_DP: 1024 * 80, // 80kb
   MESSAGES: {
     NO_VALID_CREDENTIALS: 'No credentials supplied, Please try again',
     INVALID_CREDENTIALS:

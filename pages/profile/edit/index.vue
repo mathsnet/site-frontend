@@ -13,8 +13,28 @@
             </v-sheet>
             <v-card-text>
               <div class="text-center mb-6">
-                <v-avatar :size="avatarSize" color="primary">
-                  <span class="text-h2 white--text">DP</span>
+                <v-avatar
+                  :size="avatarSize"
+                  color="primary"
+                  @click="showDPUpload"
+                >
+                  <v-overlay absolute :value="dpOverlay">
+                    <v-progress-circular indeterminate size="40" />
+                  </v-overlay>
+                  <span v-if="!dpAvailable" class="text-h2 white--text"
+                    >DP</span
+                  >
+                  <v-img v-else :src="profileDP">
+                    <template #placeholder>
+                      <v-row
+                        justify="center"
+                        align="center"
+                        class="fill-height"
+                      >
+                        <v-progress-circular indeterminate />
+                      </v-row>
+                    </template>
+                  </v-img>
                 </v-avatar>
               </div>
               <div class="text-center mb-5 mb-md-9">
@@ -73,6 +93,14 @@
         </v-col>
       </v-row>
     </div>
+    <div class="d-none">
+      <input
+        ref="filechooser"
+        type="file"
+        accept=".jpeg, .jpg, .png"
+        @change="uploadDP($event)"
+      />
+    </div>
   </div>
 </template>
 
@@ -89,9 +117,16 @@ export default {
       rules: formRules,
       valid: false,
       loading: false,
+      dpOverlay: false,
     }
   },
   computed: {
+    profileDP() {
+      return this.$auth.user.dp_link
+    },
+    dpAvailable() {
+      return !!this.profileDP
+    },
     sheetHeight() {
       return this.$vuetify.breakpoint.smAndDown ? '50px' : '100px'
     },
@@ -104,6 +139,67 @@ export default {
     },
   },
   methods: {
+    showDPUpload() {
+      this.$refs.filechooser.click()
+    },
+    async uploadDP(e) {
+      const file = e.target.files[0]
+      const dpSize = file.size
+      const dpExt = file.name.split('.').pop().toLowerCase()
+      if (dpSize > CONSTANTS.ALLOWED_FILE_SIZE_DP) {
+        const msg = `Maximum file size for profile photo is ${
+          CONSTANTS.ALLOWED_FILE_SIZE_DP / 1024
+        }KB`
+        this.$store.dispatch('snackalert/showErrorSnackbar', msg)
+        return
+      }
+      if (!CONSTANTS.ALLOWED_EXTENSIONS_FOR_DP.includes(dpExt)) {
+        const msg = `Allowed Extensions: ${_.join(
+          CONSTANTS.ALLOWED_EXTENSIONS_FOR_DP
+        )}`
+        this.$store.dispatch('snackalert/showErrorSnackbar', msg)
+        return
+      }
+      this.dpOverlay = true
+      this.$store.dispatch('actionoverlay/updateOverlayAction', true, 0.75)
+      const readData = (f) =>
+        new Promise((resolve) => {
+          const reader = new FileReader()
+          reader.onload = () => resolve(reader.result)
+          reader.readAsDataURL(f)
+        })
+
+      const fdata = await readData(file)
+      const clInstance = this.$cloudinary.upload(fdata, {
+        folder: 'images',
+        uploadPreset: 'image_preset',
+      })
+      clInstance
+        .then((d) => this.updateDPLink(d.secure_url))
+        .catch((e) => console.log(e))
+      this.dpOverlay = false
+      this.$store.dispatch('actionoverlay/updateOverlayAction', false)
+    },
+    async updateDPLink(url) {
+      try {
+        const { data } = await this.$axios.post(
+          CONSTANTS.ROUTES.GENERAL.UPDATE_DP_LINK,
+          {
+            dp_link: url,
+          }
+        )
+        this.$store.dispatch('snackalert/showSuccessSnackbar', data.message)
+        this.$auth.fetchUser()
+      } catch (e) {
+        let msg
+        if (e.response) {
+          msg = e.response.data.message
+        } else {
+          msg = CONSTANTS.MESSAGES.UNKNOWN_ERROR
+        }
+        this.$store.dispatch('snackalert/showErrorSnackbar', msg)
+      }
+    },
     async updateProfile() {
       if (!this.$refs.eform.validate()) {
         this.$store.dispatch(

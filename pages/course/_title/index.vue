@@ -118,7 +118,7 @@
                 <v-progress-circular indeterminate color="primary" />
               </div>
               <div v-else>
-                <div v-if="topics.length > 0">
+                <div v-if="topics && topics.length > 0">
                   <v-expansion-panels>
                     <v-expansion-panel v-for="(topic, i) in topics" :key="i">
                       <v-expansion-panel-header class="font-weight-bold"
@@ -170,7 +170,7 @@
               <v-progress-circular indeterminate color="primary" />
             </div>
             <div v-else>
-              <div v-if="otherCourses.length > 0">
+              <div v-if="otherCourses && otherCourses.length > 0">
                 <div v-for="(course, i) in otherCourses" :key="i" class="mb-4">
                   <CourseDataCardGeneral :course="course" />
                 </div>

@@ -13,7 +13,14 @@
           <v-card-text>
             <div class="text-center mb-3">
               <v-avatar :size="avatarSize" color="primary">
-                <span class="text-h2 white--text">DP</span>
+                <span v-if="!dpAvailable" class="text-h2 white--text">DP</span>
+                <v-img v-else :src="profileDP">
+                  <template #placeholder>
+                    <v-row justify="center" align="center" class="fill-height">
+                      <v-progress-circular indeterminate />
+                    </v-row>
+                  </template>
+                </v-img>
               </v-avatar>
             </div>
             <div class="text-center">
@@ -62,6 +69,12 @@ export default {
     }
   },
   computed: {
+    profileDP() {
+      return this.$auth.user.dp_link
+    },
+    dpAvailable() {
+      return !!this.profileDP
+    },
     sheetHeight() {
       return this.$vuetify.breakpoint.smAndDown ? '50px' : '100px'
     },
