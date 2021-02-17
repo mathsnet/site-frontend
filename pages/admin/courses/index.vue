@@ -31,7 +31,10 @@
           />
         </div>
       </div>
-      <div v-else class="mx-auto text-center display-3 font-weight-bold">
+      <div
+        v-else
+        class="mx-auto text-center text-h6 text-sm-h5 text-md-h3 font-weight-bold"
+      >
         {{ noData }}
       </div>
     </div>

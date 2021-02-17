@@ -7,8 +7,11 @@
         {{ topic.instructor.last_name }}</v-card-subtitle
       >
       <v-card-text>
-        <div :style="{ height: '60px' }">
-          {{ topic.description }}
+        <div
+          :style="{ height: '70px' }"
+          @click="showFullDescription(topic.description)"
+        >
+          <TextTruncate>{{ topic.description }}</TextTruncate>
         </div>
       </v-card-text>
       <v-card-actions>
@@ -33,12 +36,19 @@
         <v-spacer />
       </v-card-actions>
     </v-card>
+    <FullDescriptionDialog
+      :open="openFullDescription"
+      :text="fullDescription"
+      @closeDialog="openFullDescription = false"
+    />
   </div>
 </template>
 
 <script>
+import FullDescriptionDialog from '~/components/dialogs/FullDescriptionDialog'
 export default {
   name: 'TopicDataCard',
+  components: { FullDescriptionDialog },
   props: {
     topic: {
       type: Object,
@@ -46,7 +56,10 @@ export default {
     },
   },
   data() {
-    return {}
+    return {
+      openFullDescription: false,
+      fullDescription: '',
+    }
   },
   computed: {},
   methods: {
@@ -55,6 +68,10 @@ export default {
     },
     deleteTopic(id) {
       this.$emit('deleteTopic', { id })
+    },
+    showFullDescription(data) {
+      this.fullDescription = data
+      this.openFullDescription = true
     },
   },
 }

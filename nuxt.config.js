@@ -24,6 +24,8 @@ export default {
     { src: '~/plugins/nuxt-video-player-client.js', mode: 'client' },
     { src: '~/plugins/core-video-player.js', mode: 'client' },
     { src: '~/plugins/video-embed-player.js', mode: 'client' },
+    { src: '~/plugins/vue-text-truncate.js', mode: 'client' },
+    { src: '~/plugins/vue-paystack-plugin.js', mode: 'client' },
   ],
 
   // Auto import components (https://go.nuxtjs.dev/config-components)

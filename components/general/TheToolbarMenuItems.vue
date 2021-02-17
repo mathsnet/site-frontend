@@ -108,12 +108,12 @@ export default {
         this.$auth.user &&
         this.$auth.user.user_type === CONSTANTS.USER_TYPES.INSTRUCTOR
       ) {
-        return { name: 'instructor-dashboard' }
+        return { name: 'instructor-topics' }
       } else if (
         this.$auth.user &&
         this.$auth.user.user_type === CONSTANTS.USER_TYPES.STUDENT
       ) {
-        return { name: 'student-dashboard' }
+        return { name: 'student-courses' }
       } else {
         return '/'
       }

@@ -11,8 +11,11 @@
       <v-card-title class="text-capitalize">{{ item.title }}</v-card-title>
       <v-card-subtitle> &#8358;{{ item.price }}</v-card-subtitle>
       <v-card-text>
-        <div :style="{ height: '60px' }">
-          {{ item.description }}
+        <div
+          :style="{ height: '70px' }"
+          @click="showFullDescription(item.description)"
+        >
+          <TextTruncate>{{ item.description }}</TextTruncate>
         </div>
       </v-card-text>
       <v-divider></v-divider>
@@ -36,12 +39,19 @@
         >
       </v-card-actions>
     </v-card>
+    <FullDescriptionDialog
+      :open="openFullDescription"
+      :text="fullDescription"
+      @closeDialog="openFullDescription = false"
+    />
   </div>
 </template>
 
 <script>
+import FullDescriptionDialog from '~/components/dialogs/FullDescriptionDialog'
 export default {
   name: 'CourseDataList',
+  components: { FullDescriptionDialog },
   props: {
     item: {
       type: Object,
@@ -49,7 +59,10 @@ export default {
     },
   },
   data() {
-    return {}
+    return {
+      openFullDescription: false,
+      fullDescription: '',
+    }
   },
   computed: {
     thumbnail() {
@@ -70,6 +83,10 @@ export default {
     },
     deleteData(item) {
       this.$emit('deleteData', { ...item })
+    },
+    showFullDescription(data) {
+      this.fullDescription = data
+      this.openFullDescription = true
     },
   },
 }

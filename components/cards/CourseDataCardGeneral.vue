@@ -15,8 +15,11 @@
         }}</v-chip></v-card-subtitle
       >
       <v-card-text>
-        <div :style="{ height: '60px' }">
-          {{ courseDescription }}
+        <div
+          :style="{ height: '70px' }"
+          @click="showFullDescription(courseDescription)"
+        >
+          <TextTruncate>{{ courseDescription }}</TextTruncate>
         </div>
       </v-card-text>
       <v-divider />
@@ -32,17 +35,30 @@
         <v-spacer />
       </v-card-actions>
     </v-card>
+    <FullDescriptionDialog
+      :open="openFullDescription"
+      :text="fullDescription"
+      @closeDialog="openFullDescription = false"
+    />
   </div>
 </template>
 
 <script>
+import FullDescriptionDialog from '~/components/dialogs/FullDescriptionDialog'
 export default {
   name: 'CourseDataCardGeneral',
+  components: { FullDescriptionDialog },
   props: {
     course: {
       type: Object,
       default: () => {},
     },
+  },
+  data() {
+    return {
+      openFullDescription: false,
+      fullDescription: '',
+    }
   },
   computed: {
     cardHeight() {
@@ -57,6 +73,12 @@ export default {
     },
     courseDescription() {
       return this.course.description
+    },
+  },
+  methods: {
+    showFullDescription(data) {
+      this.fullDescription = data
+      this.openFullDescription = true
     },
   },
 }

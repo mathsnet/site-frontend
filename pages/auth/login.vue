@@ -87,10 +87,10 @@ export default {
         })
         switch (this.$auth.user.user_type) {
           case CONSTANTS.USER_TYPES.INSTRUCTOR:
-            this.$router.push({ name: 'instructor-dashboard' })
+            this.$router.push({ name: 'instructor-topics' })
             break
           case CONSTANTS.USER_TYPES.STUDENT:
-            this.$router.push({ name: 'student-dashboard' })
+            this.$router.push({ name: 'student-courses' })
             break
           case CONSTANTS.USER_TYPES.ADMIN:
             this.$router.push({ name: 'admin-dashboard' })

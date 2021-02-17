@@ -81,7 +81,13 @@
                       courseData.subscription.title
                     }}</v-chip>
                   </div>
-                  <div class="text-body-1">{{ courseData.description }}</div>
+                  <div
+                    class="text-body-1"
+                    style="height: 200px"
+                    @click="showFullDescription(courseData.description)"
+                  >
+                    <TextTruncate>{{ courseData.description }}</TextTruncate>
+                  </div>
                 </div>
               </v-col>
             </v-row>
@@ -189,6 +195,11 @@
         {{ messages.COURSE_NOT_FOUND }}
       </div>
     </div>
+    <FullDescriptionDialog
+      :open="openFullDescription"
+      :text="fullDescription"
+      @closeDialog="openFullDescription = false"
+    />
   </div>
 </template>
 
@@ -198,10 +209,12 @@ import { CONSTANTS } from '~/assets/javascript/constants'
 import CircularLoader from '~/components/loaders/CircularLoader'
 import FetchError from '~/components/errors/FetchError'
 import CourseDataCardGeneral from '~/components/cards/CourseDataCardGeneral'
+import FullDescriptionDialog from '~/components/dialogs/FullDescriptionDialog'
 
 export default {
   layout: 'homepage',
   components: {
+    FullDescriptionDialog,
     CourseDataCardGeneral,
     CircularLoader,
     FetchError,
@@ -225,6 +238,8 @@ export default {
   },
   data() {
     return {
+      openFullDescription: false,
+      fullDescription: '',
       courseData: {},
       messages: CONSTANTS.MESSAGES,
       topics: [],
@@ -305,6 +320,10 @@ export default {
         this.$store.dispatch('snackalert/showErrorSnackbar', msg)
       }
       this.otherCoursesLoading = false
+    },
+    showFullDescription(data) {
+      this.fullDescription = data
+      this.openFullDescription = true
     },
   },
   head() {

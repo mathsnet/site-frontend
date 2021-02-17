@@ -176,7 +176,14 @@ export default {
       })
       clInstance
         .then((d) => this.updateDPLink(d.secure_url))
-        .catch((e) => console.log(e))
+        .catch((e) => {
+          // eslint-disable-next-line no-console
+          console.log(e)
+          this.$store.dispatch(
+            'snackalert/showErrorSnackbar',
+            'Error Occurred While Uploading Your Image'
+          )
+        })
       this.dpOverlay = false
       this.$store.dispatch('actionoverlay/updateOverlayAction', false)
     },
