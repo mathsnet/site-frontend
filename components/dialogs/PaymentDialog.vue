@@ -5,9 +5,10 @@
         <v-card-text class="text-center mt-6 pt-7">
           <div class="mb-6">
             <div class="font-weight-bold">Reference Number:</div>
-            <div class="primary--text">{{ referenceGen().toString() }}</div>
+            <div class="primary--text">{{ reference }}</div>
           </div>
           <paystack
+            ref="makePaymentBtn"
             :embed="false"
             :amount="amount * 100"
             :email="email"
@@ -16,7 +17,7 @@
             :close="close"
             :callback="callback"
           >
-            <v-btn ref="makePaymentBtn" class="d-none">MAKE PAYMENT</v-btn>
+            <v-btn class="d-none">MAKE PAYMENT</v-btn>
           </paystack>
           <v-btn
             outlined
@@ -29,7 +30,14 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer />
-          <v-btn small outlined color="error" @click="closeDialog">Close</v-btn>
+          <v-btn
+            small
+            outlined
+            color="error"
+            :disabled="disabled"
+            @click="closeDialog"
+            >Close</v-btn
+          >
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -55,11 +63,16 @@ export default {
       type: Number,
       default: 0,
     },
+    subscription: {
+      type: Number,
+      default: 0,
+    },
   },
   data() {
     return {
       paystackkey: this.$config.PAYSTACK_PUBLIC_KEY,
       loading: false,
+      disabled: false,
     }
   },
   computed: {
@@ -69,20 +82,40 @@ export default {
     email() {
       return this.user.email
     },
-    fName() {
-      return this.user.first_name
-    },
-    lName() {
-      return this.user.last_name
-    },
     reference() {
       return this.referenceGen()
     },
   },
   methods: {
-    makePayment() {
+    async makePayment() {
       this.loading = true
-      this.$refs.makePaymentBtn.click()
+      this.disabled = true
+      try {
+        const { data } = await this.$axios.post(
+          CONSTANTS.ROUTES.STUDENT.ADD_PAYMENT,
+          {
+            data: {
+              reference: this.reference,
+              subscription: this.subscription,
+            },
+          }
+        )
+        if (data.added) {
+          this.$refs.makePaymentBtn.$el.click()
+        }
+      } catch (e) {
+        let msg
+        if (e.response) {
+          msg = e.response.data.message
+        } else {
+          msg = CONSTANTS.MESSAGES.UNKNOWN_ERROR
+        }
+        this.$store.dispatch('snackalert/showErrorSnackbar', msg)
+        this.closeDialog()
+        this.$router.go(0)
+      }
+      this.loading = false
+      this.disabled = false
     },
     referenceGen() {
       let refN = `${CONSTANTS.APP_NAME}-REF-`
@@ -97,6 +130,7 @@ export default {
       this.closeDialog()
       // eslint-disable-next-line no-console
       console.log('payment return')
+      // TODO: SEND REFERENCE NUMBER TO BACKEND FOR VERIFICATION
     },
     close() {
       // eslint-disable-next-line no-console

@@ -22,8 +22,12 @@ export const CONSTANTS = {
       GET_INSTRUCTORS: 'admin/get/instructors',
       ADD_STUDENT: 'admin/add/student',
       GET_STUDENTS: 'admin/get/students',
+      LOAD_PAYMENTS: 'admin/load/payments',
     },
-    STUDENT: {},
+    STUDENT: {
+      ADD_PAYMENT: '/student/add/payment',
+      LOAD_PAYMENTS: '/student/load/payments',
+    },
     INSTRUCTOR: {
       GET_TOPICS: 'instructor/get/topics',
       ADD_TOPIC: 'instructor/add/topic',

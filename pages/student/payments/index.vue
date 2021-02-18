@@ -4,13 +4,13 @@
     <div class="mt-4">
       <v-card>
         <v-card-title>
-          <v-text-field
+          <!--<v-text-field
             v-model="search"
             append-icon="mdi-magnify"
             label="Search"
             single-line
             hide-details
-          ></v-text-field>
+          ></v-text-field>-->
         </v-card-title>
         <v-data-table
           :headers="headers"
@@ -23,6 +23,26 @@
           :server-items-length="totalItems"
           loading-text="Loading Data, Please wait"
         >
+          <template #item.action="{ item }">
+            <v-menu>
+              <template #activator="{ on, attrs }">
+                <v-btn icon v-bind="attrs" color="primary" v-on="on">
+                  <v-icon>mdi-dots-vertical</v-icon>
+                </v-btn>
+              </template>
+              <v-list>
+                <v-list-item>
+                  <v-list-item-content>
+                    <v-list-item-title
+                      class="primary--text"
+                      @click="verifyPayment(item)"
+                      >Verify</v-list-item-title
+                    >
+                  </v-list-item-content>
+                </v-list-item>
+              </v-list>
+            </v-menu>
+          </template>
           <template #item.status="{ item }">
             <div v-if="item.status === true" class="success--text">Paid</div>
             <div v-else class="error--text">Pending</div>
@@ -42,10 +62,9 @@
 import format from 'date-fns/format'
 import TheHeadInfo from '~/components/general/TheHeadInfo'
 import { CONSTANTS } from '~/assets/javascript/constants'
-
 export default {
   components: { TheHeadInfo },
-  middleware: ['authenticate', 'auth-admin'],
+  middleware: ['authenticate', 'auth-student'],
   data() {
     return {
       format,
@@ -62,7 +81,6 @@ export default {
   computed: {
     headers() {
       return [
-        { value: 'by', text: 'Paid By', sortable: false },
         { value: 'subscription', text: 'Subscription', sortable: false },
         { value: 'reference', text: 'Reference', sortable: false },
         {
@@ -72,13 +90,13 @@ export default {
           sortable: false,
         },
         { value: 'status', text: 'Status', align: 'center', sortable: false },
+        { value: 'action', text: 'Actions', align: 'center', sortable: false },
       ]
     },
     items() {
       return this.itemsData && this.itemsData.length > 0
         ? this.itemsData.map((item) => {
             return {
-              by: `${item.payer.first_name} ${item.payer.last_name}`,
               subscription: item.subscription.title,
               reference: item.reference,
               createdOn: item.created_on,
@@ -96,13 +114,16 @@ export default {
     },
     deep: true,
   },
+  mounted() {
+    // this.loadPaymentData()
+  },
   methods: {
     async loadPaymentData() {
       this.loading = true
       const { page, itemsPerPage } = this.options
       try {
         const { data } = await this.$axios.post(
-          CONSTANTS.ROUTES.ADMIN.LOAD_PAYMENTS,
+          CONSTANTS.ROUTES.STUDENT.LOAD_PAYMENTS,
           { page, per_page: itemsPerPage > 0 ? itemsPerPage : 100000 }
         )
 
@@ -119,6 +140,10 @@ export default {
         this.$store.dispatch('snackalert/showErrorSnackbar', msg)
       }
       this.loading = false
+    },
+    verifyPayment(data) {
+      // eslint-disable-next-line no-console
+      console.log(data)
     },
   },
   head() {

@@ -42,6 +42,7 @@
     <PaymentDialog
       :show="paymentDialogState"
       :amount="amount"
+      :subscription="pricingId"
       @closeDialog="paymentDialogState = false"
     />
   </div>
@@ -74,6 +75,7 @@ export default {
     return {
       subscriptions: [],
       amount: 0,
+      pricingId: 0,
       paymentDialogState: false,
     }
   },
@@ -81,6 +83,7 @@ export default {
   methods: {
     addSubscription(data) {
       this.amount = data.price
+      this.pricingId = data.id
       this.paymentDialogState = true
     },
   },

@@ -108,6 +108,11 @@ export default {
           icon: 'mdi-badge-account-horizontal-outline',
         },
         {
+          title: 'Payments',
+          to: { name: 'student-payments' },
+          icon: 'mdi-badge-account-horizontal-outline',
+        },
+        {
           title: 'Profile',
           to: { name: 'profile' },
           icon: 'mdi-account-circle-outline',
