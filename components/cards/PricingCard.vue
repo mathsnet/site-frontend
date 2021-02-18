@@ -25,15 +25,10 @@
           &#8358;{{ pricing.price }}
         </div>
         <div class="font-weight-bold text-caption text-md-body-2 mb-5">
-          Per {{ pricing.duration }}
+          for {{ pricing.duration }}
           {{ pricing.duration > 1 ? 'years' : 'year' }}
         </div>
-        <v-btn
-          v-if="canApply"
-          x-large
-          color="primary"
-          depressed
-          @click="add(pricing)"
+        <v-btn v-if="canApply" color="primary" depressed @click="add(pricing)"
           >Add</v-btn
         >
         <v-divider v-if="!$auth.loggedIn" />

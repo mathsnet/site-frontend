@@ -15,7 +15,16 @@ export default {
     ],
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
   },
-
+  publicRuntimeConfig: {
+    PAYSTACK_PUBLIC_KEY:
+      process.env.PAYSTACK_PUBLIC_KEY ||
+      'pk_test_23abd387bc64b31b9655e1003d5e3abc9cb4f24c',
+  },
+  privateRuntimeConfig: {
+    PAYSTACK_PRIVATE_KEY:
+      process.env.PAYSTACK_PRIVATE_KEY ||
+      'sk_test_f83558740705a906961bb24e9c2c156ee7a8afda',
+  },
   // Global CSS (https://go.nuxtjs.dev/config-css)
   css: [],
 

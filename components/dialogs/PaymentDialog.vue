@@ -16,8 +16,16 @@
             :close="close"
             :callback="callback"
           >
-            <v-icon>mdi-money</v-icon> MAKE PAYMENT
+            <v-btn ref="makePaymentBtn" class="d-none">MAKE PAYMENT</v-btn>
           </paystack>
+          <v-btn
+            outlined
+            small
+            color="primary"
+            :loading="loading"
+            @click="makePayment"
+            >MAKE PAYMENT</v-btn
+          >
         </v-card-text>
         <v-card-actions>
           <v-spacer />
@@ -50,12 +58,13 @@ export default {
   },
   data() {
     return {
-      paystackkey: 'iiiiii',
+      paystackkey: this.$config.PAYSTACK_PUBLIC_KEY,
+      loading: false,
     }
   },
   computed: {
     user() {
-      return this.$auth.user
+      return this.$auth.loggedIn ? this.$auth.user : { email: 'none' }
     },
     email() {
       return this.user.email
@@ -71,6 +80,10 @@ export default {
     },
   },
   methods: {
+    makePayment() {
+      this.loading = true
+      this.$refs.makePaymentBtn.click()
+    },
     referenceGen() {
       let refN = `${CONSTANTS.APP_NAME}-REF-`
       const letters =
@@ -81,6 +94,7 @@ export default {
       return refN
     },
     callback() {
+      this.closeDialog()
       // eslint-disable-next-line no-console
       console.log('payment return')
     },
