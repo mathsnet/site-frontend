@@ -48,6 +48,7 @@ export const CONSTANTS = {
       UPDATE_PROFILE: 'update/profile',
       GET_SUBSCRIPTIONS_DATA: 'get/subscriptions/data',
       UPDATE_DP_LINK: 'update/dp/link',
+      VALIDATE_PAYMENT: 'validate/payment',
     },
     AUTH: {
       LOGIN: 'auth/login',

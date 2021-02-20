@@ -128,18 +128,31 @@ export default {
     },
     async callback() {
       this.$store.dispatch('actionoverlay/updateOverlayAction', true, 0.75)
-      // TODO: SEND REFERENCE NUMBER TO BACKEND FOR VERIFICATION
       try {
-        const { data } = await this.$axios.post(
-          CONSTANTS.ROUTES.STUDENT.ADD_SUBSCRIPTION,
+        const validationResp = await this.$axios.post(
+          CONSTANTS.ROUTES.GENERAL.VALIDATE_PAYMENT,
           {
-            data: {
-              subscription: this.subscription,
-            },
+            reference: this.reference,
           }
         )
-        this.$store.dispatch('snackalert/showSuccessSnackbar', data.message)
-        await this.$router.push({ name: 'student-subscriptions' })
+        if (validationResp.data.status) {
+          const { data } = await this.$axios.post(
+            CONSTANTS.ROUTES.STUDENT.ADD_SUBSCRIPTION,
+            {
+              data: {
+                subscription: this.subscription,
+              },
+            }
+          )
+          this.$store.dispatch('snackalert/showSuccessSnackbar', data.message)
+          await this.$router.push({ name: 'student-subscriptions' })
+        } else {
+          this.$store.dispatch(
+            'snackalert/showErrorSnackbar',
+            validationResp.data.message
+          )
+          this.$router.go(0)
+        }
       } catch (e) {
         let msg
         if (e.response) {
