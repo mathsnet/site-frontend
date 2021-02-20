@@ -103,13 +103,29 @@
               PLEASE SIGNUP/LOGIN FIRST IN ORDER TO ADD THIS COURSE
             </div>
             <div v-else>
-              <div v-if="!canViewCourse">
+              <div v-if="studentCanApply && !studentCanViewCourse">
                 <v-btn
                   color="primary"
                   :loading="addCourseLoading"
+                  :disabled="disabledAddCourse"
                   @click="addCourse"
                   >Add Course
                 </v-btn>
+              </div>
+              <div
+                v-else-if="!studentCanApply"
+                class="font-weight-bold error--text"
+              >
+                Please Subscribe to
+                <v-btn
+                  text
+                  plain
+                  color="primary"
+                  class="text-uppercase"
+                  :to="{ name: 'pricing' }"
+                  >{{ courseData.subscription.title }}</v-btn
+                >
+                first in order to add this course
               </div>
             </div>
           </div>
@@ -235,6 +251,25 @@ export default {
     this.courseData = data.course
     await this.loadTopics(this.courseData.id)
     await this.loadOtherCourses(this.courseData.id)
+
+    if (
+      this.$auth.loggedIn &&
+      this.$auth.user.user_type === CONSTANTS.USER_TYPES.STUDENT
+    ) {
+      const subResp = await this.$axios.post(
+        CONSTANTS.ROUTES.STUDENT.CHECK_SUBSCRIPTION_STATUS,
+        {
+          subscription: this.courseData.subscription.id,
+        }
+      )
+      this.studentCanApply = !subResp.data.status
+
+      const courseResp = await this.$axios.post(
+        CONSTANTS.ROUTES.STUDENT.CHECK_COURSE_STATUS,
+        { data: { course: this.courseData.id } }
+      )
+      this.studentCanViewCourse = !courseResp.data.status
+    }
   },
   data() {
     return {
@@ -247,6 +282,9 @@ export default {
       topicsLoading: true,
       otherCoursesLoading: true,
       addCourseLoading: false,
+      studentCanViewCourse: false,
+      studentCanApply: false,
+      disabledAddCourse: false,
     }
   },
   computed: {
@@ -257,7 +295,7 @@ export default {
         this.$auth.loggedIn &&
         this.$auth.user.user_type === CONSTANTS.USER_TYPES.STUDENT
       ) {
-        return false
+        return this.studentCanViewCourse
       } else {
         return true
       }
@@ -277,9 +315,32 @@ export default {
     },
   },
   methods: {
-    addCourse() {
+    async addCourse() {
       this.addCourseLoading = true
-      setTimeout(() => (this.addCourseLoading = false), 7000)
+      try {
+        const { data } = await this.$axios.post(
+          CONSTANTS.ROUTES.STUDENT.ADD_COURSE,
+          {
+            data: {
+              course: this.courseData.id,
+            },
+          }
+        )
+        if (data.added) {
+          this.studentCanViewCourse = true
+          this.disabledAddCourse = true
+          this.$store.dispatch('snackalert/showSuccessSnackbar', data.message)
+        }
+      } catch (e) {
+        let msg
+        if (e.response) {
+          msg = e.response.data.message
+        } else {
+          msg = CONSTANTS.MESSAGES.UNKNOWN_ERROR
+        }
+        this.$store.dispatch('snackalert/showErrorSnackbar', msg)
+      }
+      this.addCourseLoading = false
     },
     async loadTopics(courseId) {
       try {

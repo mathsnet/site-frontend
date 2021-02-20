@@ -145,7 +145,7 @@ import GeneralError from '~/components/errors/GeneralError'
 
 export default {
   layout: 'homepage',
-  middleware: ['authenticate', 'auth-canview-topic'],
+  middleware: ['authenticate'],
   components: {
     GeneralError,
     VideoPlayer,
@@ -166,6 +166,26 @@ export default {
       this.$router.push({ name: 'courses' })
     }
     this.courseData = data.course
+
+    if (
+      this.$auth.loggedIn &&
+      this.$auth.user.user_type === CONSTANTS.USER_TYPES.STUDENT
+    ) {
+      const cResp = await this.$axios.post(
+        CONSTANTS.ROUTES.STUDENT.CHECK_COURSE_STATUS,
+        { data: { course: this.courseData.id } }
+      )
+      if (cResp.data.status) {
+        this.$store.dispatch(
+          'snackalert/showErrorSnackbar',
+          CONSTANTS.MESSAGES.ADD_COURSE_FIRST
+        )
+        await this.$router.push({
+          name: 'course-title',
+          params: { title: this.$route.params.title },
+        })
+      }
+    }
 
     const res = await this.$axios.post(
       CONSTANTS.ROUTES.GENERAL.GET_TOPIC_DATA,
@@ -235,6 +255,7 @@ export default {
       return this.currentTopic.title ? this.currentTopic.title : 'Loading'
     },
   },
+  mounted() {},
   methods: {
     async loadTopics(courseId) {
       try {

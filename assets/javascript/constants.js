@@ -26,7 +26,13 @@ export const CONSTANTS = {
     },
     STUDENT: {
       ADD_PAYMENT: '/student/add/payment',
+      ADD_COURSE: '/student/add/course',
+      ADD_SUBSCRIPTION: '/student/add/subscription',
       LOAD_PAYMENTS: '/student/load/payments',
+      LOAD_COURSES: '/student/load/courses',
+      LOAD_SUBSCRIPTIONS: '/student/load/subscriptions',
+      CHECK_SUBSCRIPTION_STATUS: '/student/check/subscription/status',
+      CHECK_COURSE_STATUS: '/student/check/course/status',
     },
     INSTRUCTOR: {
       GET_TOPICS: 'instructor/get/topics',
@@ -86,5 +92,6 @@ export const CONSTANTS = {
       "Oops! You don't have access to view that course contents",
     GENERAL_ERROR_MESSAGE:
       'Oops! Something went wrong with your request. please try again',
+    ADD_COURSE_FIRST: 'Please add the course to your courses list first',
   },
 }

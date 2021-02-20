@@ -24,7 +24,7 @@
           loading-text="Loading Data, Please wait"
         >
           <template #item.action="{ item }">
-            <v-menu>
+            <v-menu v-if="!item.status">
               <template #activator="{ on, attrs }">
                 <v-btn icon v-bind="attrs" color="primary" v-on="on">
                   <v-icon>mdi-dots-vertical</v-icon>

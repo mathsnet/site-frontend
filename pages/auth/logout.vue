@@ -1,6 +1,6 @@
 <template>
-  <div class="text-center font-weight-black text-h2 mt-7">
-    Logging Out.............
+  <div class="text-center font-weight-black text-h6 text-md-h3 mt-14 mt-md-7">
+    Logging Out............. Please wait
   </div>
 </template>
 

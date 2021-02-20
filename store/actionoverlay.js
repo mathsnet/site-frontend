@@ -20,7 +20,7 @@ export const getters = {
 }
 
 export const actions = {
-  updateOverlayAction({ commit }, showState, opacity = 0.8) {
+  updateOverlayAction({ commit }, showState, opacity = 0.6) {
     commit('SET_STATE', showState, opacity)
   },
 }

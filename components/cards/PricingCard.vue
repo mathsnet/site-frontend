@@ -1,6 +1,12 @@
 <template>
   <div>
-    <v-card class="text-center">
+    <div v-if="$fetchState.pending">
+      <CircularLoader />
+    </div>
+    <div v-else-if="$fetchState.error">
+      <FetchError :show-img="false" @reloadFetch="$fetch" />
+    </div>
+    <v-card v-else class="text-center">
       <v-img :src="thumbnail" lazy-src="/images/thumbnail.jpg" height="240">
         <template #placeholder>
           <v-row justify="center" align="center" class="fill-height">
@@ -28,7 +34,11 @@
           for {{ pricing.duration }}
           {{ pricing.duration > 1 ? 'years' : 'year' }}
         </div>
-        <v-btn v-if="canApply" color="primary" depressed @click="add(pricing)"
+        <v-btn
+          :disabled="!canApply"
+          color="primary"
+          depressed
+          @click="add(pricing)"
           >Add</v-btn
         >
         <v-divider v-if="!$auth.loggedIn" />
@@ -53,20 +63,39 @@
 <script>
 import { CONSTANTS } from '~/assets/javascript/constants'
 import FullDescriptionDialog from '~/components/dialogs/FullDescriptionDialog'
+import FetchError from '~/components/errors/FetchError'
+import CircularLoader from '~/components/loaders/CircularLoader'
 
 export default {
   name: 'PricingCard',
-  components: { FullDescriptionDialog },
+  components: {
+    FullDescriptionDialog,
+    CircularLoader,
+    FetchError,
+  },
   props: {
     pricing: {
       type: Object,
       default: () => {},
     },
   },
+  async fetch() {
+    if (
+      this.$auth.loggedIn &&
+      this.$auth.user.user_type === CONSTANTS.USER_TYPES.STUDENT
+    ) {
+      const { data } = await this.$axios.post(
+        CONSTANTS.ROUTES.STUDENT.CHECK_SUBSCRIPTION_STATUS,
+        { subscription: this.pricing.id }
+      )
+      this.studentCanApply = data.status
+    }
+  },
   data() {
     return {
       openFullDescription: false,
       fullDescription: '',
+      studentCanApply: true,
     }
   },
   computed: {
@@ -84,7 +113,7 @@ export default {
       ) {
         return false
       } else {
-        return true
+        return this.pricing.price > 0 && this.studentCanApply
       }
     },
   },

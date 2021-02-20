@@ -126,11 +126,30 @@ export default {
       }
       return refN
     },
-    callback() {
-      this.closeDialog()
-      // eslint-disable-next-line no-console
-      console.log('payment return')
+    async callback() {
+      this.$store.dispatch('actionoverlay/updateOverlayAction', true, 0.75)
       // TODO: SEND REFERENCE NUMBER TO BACKEND FOR VERIFICATION
+      try {
+        const { data } = await this.$axios.post(
+          CONSTANTS.ROUTES.STUDENT.ADD_SUBSCRIPTION,
+          {
+            data: {
+              subscription: this.subscription,
+            },
+          }
+        )
+        this.$store.dispatch('snackalert/showSuccessSnackbar', data.message)
+        await this.$router.push({ name: 'student-subscriptions' })
+      } catch (e) {
+        let msg
+        if (e.response) {
+          msg = e.response.data.message
+        } else {
+          msg = CONSTANTS.MESSAGES.UNKNOWN_ERROR
+        }
+        this.$store.dispatch('snackalert/showErrorSnackbar', msg)
+      }
+      this.$store.dispatch('actionoverlay/updateOverlayAction', false)
     },
     close() {
       // eslint-disable-next-line no-console
