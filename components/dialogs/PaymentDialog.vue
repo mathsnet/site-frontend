@@ -152,8 +152,7 @@ export default {
       this.$store.dispatch('actionoverlay/updateOverlayAction', false)
     },
     close() {
-      // eslint-disable-next-line no-console
-      console.log('payment closed')
+      this.$router.go(0)
     },
     closeDialog() {
       this.$emit('closeDialog')
