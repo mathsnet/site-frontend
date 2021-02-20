@@ -9,12 +9,27 @@
     </div>
     <div v-else>
       <div v-if="courses && courses.length > 0">
-        <div class="mt-7">
+        <v-row>
+          <v-col
+            v-for="(course, n) in courses"
+            :key="n"
+            cols="12"
+            sm="6"
+            md="4"
+            lg="3"
+          >
+            <CourseDataCardGeneral :course="course" />
+          </v-col>
+        </v-row>
+        <!--<div class="mt-7">
           <ThePagination
             :pagination="pagination"
             @changePage="moveToPage($event)"
           />
-        </div>
+        </div>-->
+      </div>
+      <div v-else>
+        <NoDataToDisplay />
       </div>
     </div>
   </div>
@@ -25,12 +40,16 @@ import TheHeadInfo from '~/components/general/TheHeadInfo'
 import CircularLoader from '~/components/loaders/CircularLoader'
 import FetchError from '~/components/errors/FetchError'
 import { CONSTANTS } from '~/assets/javascript/constants'
+import NoDataToDisplay from '~/components/general/NoDataToDisplay'
+import CourseDataCardGeneral from '~/components/cards/CourseDataCardGeneral'
 export default {
   middleware: ['authenticate', 'auth-student'],
   components: {
+    NoDataToDisplay,
     TheHeadInfo,
     CircularLoader,
     FetchError,
+    CourseDataCardGeneral,
   },
   async fetch() {
     let page
@@ -41,8 +60,7 @@ export default {
         page,
       }
     )
-    // eslint-disable-next-line no-console
-    console.log(data)
+    this.courses = data.data
   },
   data() {
     return {
