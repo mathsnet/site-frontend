@@ -112,20 +112,16 @@
                   >Add Course
                 </v-btn>
               </div>
-              <div
-                v-else-if="!studentCanApply"
-                class="font-weight-bold error--text"
-              >
-                Please Subscribe to
-                <v-btn
-                  text
-                  plain
-                  color="primary"
-                  class="text-uppercase"
-                  :to="{ name: 'pricing' }"
-                  >{{ courseData.subscription.title }}</v-btn
+              <div v-else-if="!adminAndInstructor">
+                <div
+                  v-if="!studentCanApply"
+                  class="font-weight-bold error--text"
                 >
-                first in order to add this course
+                  Please Subscribe to {{ courseData.subscription.title }}
+                  <v-btn text plain color="primary" :to="{ name: 'pricing' }"
+                    >HERE</v-btn
+                  >
+                </div>
               </div>
             </div>
           </div>
@@ -288,6 +284,18 @@ export default {
     }
   },
   computed: {
+    adminAndInstructor() {
+      if (!this.$auth.loggedIn) {
+        return false
+      } else if (
+        this.$auth.loggedIn &&
+        this.$auth.user.user_type === CONSTANTS.USER_TYPES.STUDENT
+      ) {
+        return false
+      } else {
+        return true
+      }
+    },
     canViewCourse() {
       if (!this.$auth.loggedIn) {
         return false
@@ -295,7 +303,9 @@ export default {
         this.$auth.loggedIn &&
         this.$auth.user.user_type === CONSTANTS.USER_TYPES.STUDENT
       ) {
-        return this.studentCanViewCourse
+        return (
+          this.courseData.subscription.price < 1 || this.studentCanViewCourse
+        )
       } else {
         return true
       }

@@ -22,7 +22,17 @@
           >
           /
           <v-breadcrumbs-item
-            ><v-btn text tile disabled class="text-capitalize">
+            ><v-btn
+              text
+              tile
+              plain
+              color="primary"
+              class="text-capitalize"
+              :to="{
+                name: 'course-title',
+                params: { title: this.$route.params.title },
+              }"
+            >
               {{ courseTitle }}
             </v-btn></v-breadcrumbs-item
           >
@@ -169,7 +179,8 @@ export default {
 
     if (
       this.$auth.loggedIn &&
-      this.$auth.user.user_type === CONSTANTS.USER_TYPES.STUDENT
+      this.$auth.user.user_type === CONSTANTS.USER_TYPES.STUDENT &&
+      this.courseData.subscription.pricing >= 1
     ) {
       const cResp = await this.$axios.post(
         CONSTANTS.ROUTES.STUDENT.CHECK_COURSE_STATUS,

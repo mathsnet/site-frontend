@@ -122,10 +122,16 @@ export default {
   },
   async fetch() {
     let page
+    let search
+
     this.pageToGo ? (page = this.pageToGo) : (page = this.$route.query.p)
+    this.searchItem
+      ? (search = this.searchItem)
+      : (search = this.$route.query.s)
+
     const { data } = await this.$axios.post(
       CONSTANTS.ROUTES.GENERAL.GET_COURSES,
-      { page }
+      { page, search }
     )
     this.courses = data.courses
     this.pagination = data.pagination
@@ -163,8 +169,11 @@ export default {
         )
         return
       }
-      // eslint-disable-next-line no-console
-      console.log(this.searchItem)
+      this.$router.push({
+        path: this.$route.path,
+        query: { s: this.searchItem },
+      })
+      this.$fetch()
     },
   },
   head: {
