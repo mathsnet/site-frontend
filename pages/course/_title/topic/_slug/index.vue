@@ -37,10 +37,12 @@
             </v-btn></v-breadcrumbs-item
           >
         </v-breadcrumbs>
-        <div style="max-width: 100%; min-width: 100%">
+        <div v-if="!isRealYoutubeId" style="max-width: 100%; min-width: 100%">
           <VideoPlayer :player-options="options" />
         </div>
-
+        <div v-else class="my-8 youtube-player-2">
+          <youtube :video-id="youtubeId" />
+        </div>
         <!--<vue-core-video-player :src="options.sources[0].src" />
         <video-embed :src="options.sources[1].src" />-->
         <div class="mt-7 mb-3 font-weight-bold primary--text">
@@ -218,6 +220,9 @@ export default {
 
     await this.loadTopics(this.courseData.id)
     await this.loadOtherCourses(this.courseData.id)
+
+    this.youtubeId = this.$youtube.getIdFromURL(this.currentTopic.video_link)
+    this.isRealYoutubeId = this.youtubeId !== this.currentTopic.video_link
   },
   data() {
     return {
@@ -229,9 +234,17 @@ export default {
       otherCoursesLoading: true,
       addCourseLoading: false,
       topicAvailable: true,
+      youtubeId: null,
+      isRealYoutubeId: false,
     }
   },
   computed: {
+    /* youtubeId() {
+      return this.$youtube.getIdFromURL(this.currentTopic.video_link)
+    },
+    isYoutubeVideo() {
+      return this.currentTopic.video_link !== this.youtubeId
+    }, */
     options() {
       return {
         language: 'en',
@@ -317,4 +330,21 @@ export default {
 }
 </script>
 
-<style scoped></style>
+<style>
+/*.youtube-player-2 {
+  width: auto !important;
+}*/
+.youtube-player-2 {
+  overflow: hidden;
+  position: relative;
+  padding-bottom: 56.25%;
+  height: 0;
+}
+#youtube-player-2 {
+  left: 0;
+  right: 0;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+}
+</style>

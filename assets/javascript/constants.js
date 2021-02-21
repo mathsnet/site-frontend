@@ -26,6 +26,7 @@ export const CONSTANTS = {
     },
     STUDENT: {
       ADD_PAYMENT: '/student/add/payment',
+      UPDATE_PAYMENT: '/student/update/payment',
       ADD_COURSE: '/student/add/course',
       ADD_SUBSCRIPTION: '/student/add/subscription',
       LOAD_PAYMENTS: '/student/load/payments',
@@ -48,7 +49,7 @@ export const CONSTANTS = {
       UPDATE_PROFILE: 'update/profile',
       GET_SUBSCRIPTIONS_DATA: 'get/subscriptions/data',
       UPDATE_DP_LINK: 'update/dp/link',
-      VALIDATE_PAYMENT: 'validate/payment',
+      VALIDATE_PAYMENT: '/validate/payment',
     },
     AUTH: {
       LOGIN: 'auth/login',

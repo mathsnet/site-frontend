@@ -35,6 +35,7 @@ export default {
     { src: '~/plugins/video-embed-player.js', mode: 'client' },
     { src: '~/plugins/vue-text-truncate.js', mode: 'client' },
     { src: '~/plugins/vue-paystack-plugin.js', mode: 'client' },
+    { src: '~/plugins/vue-youtube-embed.js' },
   ],
 
   // Auto import components (https://go.nuxtjs.dev/config-components)
@@ -108,5 +109,7 @@ export default {
   },
 
   // Build Configuration (https://go.nuxtjs.dev/config-build)
-  build: {},
+  build: {
+    transpile: ['vue-youtube-embed'],
+  },
 }

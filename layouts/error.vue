@@ -29,6 +29,7 @@
       class="mt-3 text-capitalize"
       color="primary"
       outlined
+      exact
       :to="{ name: 'index' }"
       >Home Page</v-btn
     >

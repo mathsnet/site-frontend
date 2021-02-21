@@ -133,6 +133,7 @@ export default {
           CONSTANTS.ROUTES.GENERAL.VALIDATE_PAYMENT,
           {
             reference: this.reference,
+            subscription: this.subscription,
           }
         )
         if (validationResp.data.status) {
