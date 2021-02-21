@@ -7,6 +7,33 @@
             <div class="font-weight-bold">Reference Number:</div>
             <div class="primary--text">{{ reference }}</div>
           </div>
+          <div
+            v-if="validatingPayment"
+            class="my-4 font-weight-bold primary--text"
+          >
+            Verifying payment..... Please wait
+          </div>
+          <div
+            v-else-if="updatingPayment"
+            class="my-4 font-weight-bold primary--text"
+          >
+            Updating payment..... Please wait
+          </div>
+          <div
+            v-else-if="addingSubscription"
+            class="my-4 font-weight-bold primary--text"
+          >
+            Adding Subscription..... Please wait
+          </div>
+          <v-btn
+            v-else
+            outlined
+            small
+            color="primary"
+            :loading="loading"
+            @click="makePayment"
+            >MAKE PAYMENT</v-btn
+          >
           <paystack
             ref="makePaymentBtn"
             :embed="false"
@@ -19,14 +46,6 @@
           >
             <v-btn class="d-none">MAKE PAYMENT</v-btn>
           </paystack>
-          <v-btn
-            outlined
-            small
-            color="primary"
-            :loading="loading"
-            @click="makePayment"
-            >MAKE PAYMENT</v-btn
-          >
         </v-card-text>
         <v-card-actions>
           <v-spacer />
@@ -73,6 +92,9 @@ export default {
       paystackkey: this.$config.PAYSTACK_PUBLIC_KEY,
       loading: false,
       disabled: false,
+      validatingPayment: false,
+      updatingPayment: false,
+      addingSubscription: false,
     }
   },
   computed: {
@@ -115,7 +137,6 @@ export default {
         this.$router.go(0)
       }
       this.loading = false
-      this.disabled = false
     },
     referenceGen() {
       let refN = `${CONSTANTS.APP_NAME}-REF-`
@@ -127,7 +148,13 @@ export default {
       return refN
     },
     async callback() {
-      this.$store.dispatch('actionoverlay/updateOverlayAction', true, 0.75)
+      this.disabled = true
+      this.validatingPayment = true
+      await this.$store.dispatch(
+        'actionoverlay/updateOverlayAction',
+        true,
+        0.75
+      )
       try {
         const validationResp = await this.$axios.post(
           CONSTANTS.ROUTES.GENERAL.VALIDATE_PAYMENT,
@@ -137,16 +164,29 @@ export default {
           }
         )
         if (validationResp.data.status) {
-          const { data } = await this.$axios.post(
-            CONSTANTS.ROUTES.STUDENT.ADD_SUBSCRIPTION,
+          this.validatingPayment = false
+          this.updatingPayment = true
+          const updateRes = await this.$axios.post(
+            CONSTANTS.ROUTES.STUDENT.UPDATE_PAYMENT,
             {
-              data: {
-                subscription: this.subscription,
-              },
+              subscription: this.subscription,
+              status: true,
             }
           )
-          this.$store.dispatch('snackalert/showSuccessSnackbar', data.message)
-          await this.$router.push({ name: 'student-subscriptions' })
+          if (updateRes.data.status) {
+            this.updatingPayment = false
+            this.addingSubscription = true
+            const { data } = await this.$axios.post(
+              CONSTANTS.ROUTES.STUDENT.ADD_SUBSCRIPTION,
+              {
+                data: {
+                  subscription: this.subscription,
+                },
+              }
+            )
+            this.$store.dispatch('snackalert/showSuccessSnackbar', data.message)
+            await this.$router.push({ name: 'student-subscriptions' })
+          }
         } else {
           this.$store.dispatch(
             'snackalert/showErrorSnackbar',
@@ -162,8 +202,12 @@ export default {
           msg = CONSTANTS.MESSAGES.UNKNOWN_ERROR
         }
         this.$store.dispatch('snackalert/showErrorSnackbar', msg)
+        this.$router.go(0)
       }
-      this.$store.dispatch('actionoverlay/updateOverlayAction', false)
+      await this.$store.dispatch('actionoverlay/updateOverlayAction', false)
+      this.disabled = false
+      this.updatingPayment = false
+      this.validatingPayment = false
     },
     close() {
       this.$router.go(0)

@@ -1,6 +1,6 @@
 export const state = () => ({
   show: false,
-  opacity: 0.8,
+  opacity: 0.96,
 })
 
 export const mutations = {
@@ -20,7 +20,7 @@ export const getters = {
 }
 
 export const actions = {
-  updateOverlayAction({ commit }, showState, opacity = 0.6) {
+  updateOverlayAction({ commit }, showState, opacity = 0.95) {
     commit('SET_STATE', showState, opacity)
   },
 }

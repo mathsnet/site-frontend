@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-overlay :value="showOverlay" :opacity="opacity">
+    <v-overlay :value="showOverlay" opacity="0.93">
       <v-progress-circular size="50" indeterminate></v-progress-circular>
     </v-overlay>
   </div>

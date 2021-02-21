@@ -101,6 +101,7 @@ export default {
               reference: item.reference,
               createdOn: item.created_on,
               status: item.status,
+              subId: item.subscription.id,
             }
           })
         : []
@@ -141,9 +142,49 @@ export default {
       }
       this.loading = false
     },
-    verifyPayment(data) {
-      // eslint-disable-next-line no-console
-      console.log(data)
+    async verifyPayment(item) {
+      this.$store.dispatch('actionoverlay/updateOverlayAction', true)
+      try {
+        const validationResp = await this.$axios.post(
+          CONSTANTS.ROUTES.GENERAL.VALIDATE_PAYMENT,
+          {
+            reference: item.reference,
+            subscription: item.subId,
+          }
+        )
+        if (validationResp.data.status) {
+          const updateRes = await this.$axios.post(
+            CONSTANTS.ROUTES.STUDENT.UPDATE_PAYMENT,
+            {
+              subscription: item.subId,
+              status: true,
+            }
+          )
+          if (updateRes.data.status) {
+            const { data } = await this.$axios.post(
+              CONSTANTS.ROUTES.STUDENT.ADD_SUBSCRIPTION,
+              {
+                data: {
+                  subscription: item.subId,
+                },
+              }
+            )
+            item.status = updateRes.data.status
+            this.$store.dispatch('actionoverlay/updateOverlayAction', false)
+            this.$store.dispatch('snackalert/showSuccessSnackbar', data.message)
+            // this.$router.go(0)
+          }
+        }
+      } catch (e) {
+        let msg
+        if (e.response) {
+          msg = e.response.data.message
+        } else {
+          msg = CONSTANTS.MESSAGES.UNKNOWN_ERROR
+        }
+        this.$store.dispatch('snackalert/showErrorSnackbar', msg)
+      }
+      this.$store.dispatch('actionoverlay/updateOverlayAction', false)
     },
   },
   head() {
