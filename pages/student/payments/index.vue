@@ -176,7 +176,7 @@ export default {
           }
         } else {
           this.$store.dispatch(
-            'snackalert/showSuccessSnackbar',
+            'snackalert/showErrorSnackbar',
             validationResp.data.message
           )
         }
