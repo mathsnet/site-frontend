@@ -174,6 +174,11 @@ export default {
             this.$store.dispatch('snackalert/showSuccessSnackbar', data.message)
             // this.$router.go(0)
           }
+        } else {
+          this.$store.dispatch(
+            'snackalert/showSuccessSnackbar',
+            validationResp.data.message
+          )
         }
       } catch (e) {
         let msg
