@@ -87,6 +87,11 @@ export default {
     this.counter.topics = data.data.total_topics
     this.counter.students = data.data.total_students
     this.counter.instructors = data.data.total_instructors
+    this.counter.payments = data.data.total_payments
+    this.counter.pendingPayments = data.data.total_pending_payments
+    this.counter.paidPayments = data.data.total_paid_payments
+    this.mostAddedCourse = data.data.highest_added_course
+    this.mostAddedSubscription = data.data.highest_added_subscription
   },
   data() {
     return {
@@ -111,7 +116,12 @@ export default {
         sub_level: 0,
         students: 0,
         instructors: 0,
+        payments: 0,
+        pendingPayments: 0,
+        paidPayments: 0,
       },
+      mostAddedCourse: null,
+      mostAddedSubscription: null,
     }
   },
   computed: {
@@ -123,15 +133,21 @@ export default {
         { count: this.counter.sub_level, text: 'Subscription Levels' },
         { count: this.counter.students, text: 'Students' },
         { count: this.counter.instructors, text: 'Instructors' },
+        { count: this.counter.payments, text: 'Total Payments' },
+        { count: this.counter.pendingPayments, text: 'Pending Payments' },
+        { count: this.counter.paidPayments, text: 'Paid Payments' },
       ]
     },
     overviewItems2() {
       return [
-        { head: 'Calculus', text: 'Course with Highest Subscription' },
-        { head: 'Algebra', text: 'Course with highest topics' },
-        { head: 'Trigonometry', text: 'Course with highest views' },
-        { head: 'Calculus', text: 'Course with highest Re-subscription' },
-        { head: 'Numeracy', text: 'Course with highest Youtube views' },
+        {
+          head: this.mostAddedSubscription,
+          text: 'The Most Subscribed Subscription by Students',
+        },
+        {
+          head: this.mostAddedCourse,
+          text: 'The Most Subscribed Course By Students',
+        },
       ]
     },
     sbreak() {

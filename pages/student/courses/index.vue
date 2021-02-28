@@ -18,15 +18,15 @@
             md="4"
             lg="3"
           >
-            <CourseDataCardGeneral :course="course" />
+            <CourseDataCardGeneral :course="course.course" />
           </v-col>
         </v-row>
-        <!--<div class="mt-7">
+        <div class="mt-7">
           <ThePagination
             :pagination="pagination"
             @changePage="moveToPage($event)"
           />
-        </div>-->
+        </div>
       </div>
       <div v-else>
         <NoDataToDisplay />
@@ -60,7 +60,8 @@ export default {
         page,
       }
     )
-    this.courses = data.data
+    this.courses = data.courses
+    this.pagination = data.pagination
   },
   data() {
     return {

@@ -93,10 +93,12 @@ export default {
   },
   async fetch() {
     const { data } = await this.$axios.post(
-      CONSTANTS.ROUTES.GENERAL.GET_COURSES
+      CONSTANTS.ROUTES.GENERAL.GET_RANDOM_COURSES,
+      {
+        d: 0,
+      }
     )
     this.courses = data.courses
-    this.pagination = data.pagination
   },
   data() {
     return {

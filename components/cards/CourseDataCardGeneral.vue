@@ -10,7 +10,7 @@
       </v-img>
       <v-card-title>{{ course.title }}</v-card-title>
       <v-card-subtitle
-        ><v-chip color="primary">{{
+        ><v-chip small color="primary">{{
           course.subscription.title
         }}</v-chip></v-card-subtitle
       >
