@@ -41,9 +41,9 @@ export default {
       if (this.$vuetify.breakpoint.xsOnly) {
         return 95
       } else if (this.$vuetify.breakpoint.smOnly) {
-        return 110
-      } else {
         return 120
+      } else {
+        return 150
       }
     },
   },

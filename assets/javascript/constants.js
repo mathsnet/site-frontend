@@ -56,6 +56,7 @@ export const CONSTANTS = {
       SIGNUP: 'auth/signup',
       LOGOUT: 'auth/logout',
       USER: 'auth/get-user',
+      GENERATE_RECOVERY_TOKEN: 'auth/generate/recovery/token',
     },
   },
   ALLOWED_EXTENSIONS_FOR_DP: ['jpeg', 'jpg', 'png'],

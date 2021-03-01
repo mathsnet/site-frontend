@@ -1,5 +1,12 @@
 <template>
   <v-app :style="{ background: $vuetify.theme.themes.light.secondary }">
+    <v-app-bar color="primary" prominent flat tile app>
+      <v-spacer />
+      <v-app-bar-title class="mt-n5"
+        ><TheSiteLogo logo-type="w"
+      /></v-app-bar-title>
+      <v-spacer />
+    </v-app-bar>
     <v-main>
       <v-container fill-height>
         <v-row
@@ -22,9 +29,10 @@
 
 <script>
 import TheSnackbarAlert from '~/components/general/TheSnackbarAlert'
+import TheSiteLogo from '~/components/general/TheSiteLogo'
 export default {
   name: 'Auth',
-  components: { TheSnackbarAlert },
+  components: { TheSiteLogo, TheSnackbarAlert },
 }
 </script>
 
