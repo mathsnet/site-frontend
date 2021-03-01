@@ -30,6 +30,10 @@
         </div>
       </v-form>
     </div>
+    <div v-else class="text-center font-weight-bold text-title primary--text">
+      Open Your mailbox/spam box and following the procedure to recover your
+      account
+    </div>
   </v-card-text>
 </template>
 
@@ -65,8 +69,6 @@ export default {
         return
       }
       this.loading = true
-      // eslint-disable-next-line no-console
-      console.log('sending data')
       try {
         const { data } = await this.$axios.post(
           CONSTANTS.ROUTES.AUTH.GENERATE_RECOVERY_TOKEN,
@@ -76,8 +78,12 @@ export default {
             },
           }
         )
-        // eslint-disable-next-line no-console
-        console.log(data)
+        this.emailSent = data.status
+        this.$store.dispatch('snackalert/updateSnackbar', {
+          color: 'success',
+          msg: data.message,
+          show: true,
+        })
       } catch (e) {
         let msg
         if (e.response) {
