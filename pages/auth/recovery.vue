@@ -1,9 +1,9 @@
 <template>
   <v-card-text>
-    <div class="text-center font-weight-bold primary--text">
-      Recover Account
-    </div>
     <div v-if="!emailSent">
+      <div class="text-center font-weight-bold primary--text text-title mb-6">
+        Recover Account
+      </div>
       <v-form ref="recoveryForm" :value="valid">
         <v-text-field
           v-model="recoveryData.username"
@@ -30,8 +30,8 @@
         </div>
       </v-form>
     </div>
-    <div v-else class="text-center font-weight-bold text-title primary--text">
-      Open Your mailbox/spam box and following the procedure to recover your
+    <div v-else class="text-center font-weight-bold text-title success--text">
+      Open Your mailbox/spam box and follow the procedure to recover your
       account
     </div>
   </v-card-text>
@@ -101,7 +101,7 @@ export default {
     },
   },
   head: {
-    title: `Forget Password`,
+    title: `Account Recovery`,
     meta: [
       {
         hid: 'description',
