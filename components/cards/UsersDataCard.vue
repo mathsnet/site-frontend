@@ -3,16 +3,16 @@
     <v-card elevation="5">
       <v-card-text>
         <div class="text-center">
-          <v-avatar
-            color="primary"
-            class="white--text"
-            size="150"
-            :style="{
-              border: '2px',
-              borderColor: $vuetify.theme.themes.light.primary,
-            }"
-            ><span class="white--tex text-h4 text-md-h2">DP</span></v-avatar
-          >
+          <v-avatar :size="avatarSize" color="primary">
+            <span v-if="!dpAvailable" class="text-h2 white--text">DP</span>
+            <v-img v-else :src="profileDP">
+              <template #placeholder>
+                <v-row justify="center" align="center" class="fill-height">
+                  <v-progress-circular indeterminate />
+                </v-row>
+              </template>
+            </v-img>
+          </v-avatar>
         </div>
         <div class="text-center mt-4 mb-6 text-capitalize font-weight-black">
           <div class="headline primary--text">
@@ -42,7 +42,24 @@ export default {
   data() {
     return {}
   },
-  computed: {},
+  computed: {
+    profileDP() {
+      return this.$auth.user.dp_link
+    },
+    dpAvailable() {
+      return !!this.profileDP
+    },
+    sheetHeight() {
+      return this.$vuetify.breakpoint.smAndDown ? '50px' : '100px'
+    },
+    avatarSize() {
+      return this.$vuetify.breakpoint.xsOnly
+        ? '150'
+        : this.$vuetify.breakpoint.smOnly
+        ? '200'
+        : '270'
+    },
+  },
   methods: {},
 }
 </script>

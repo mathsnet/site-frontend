@@ -21,11 +21,11 @@
           {{ pricing.title }}
         </div>
         <div
-          class="text-caption text-md-h6 text-center"
-          style="height: 70px"
+          class="text-caption text-md-h6 text-center truncate-t"
           @click="showFullDescription(pricing.description)"
         >
-          <TextTruncate>{{ pricing.description }}</TextTruncate>
+          {{ pricing.description }}
+          <!-- <TextTruncate>{{ pricing.description }}</TextTruncate> -->
         </div>
         <div class="font-weight-black text-h4 text-md-h2 black--text">
           &#8358;{{ pricing.price }}
@@ -35,16 +35,17 @@
           {{ pricing.duration > 1 ? 'years' : 'year' }}
         </div>
         <v-btn
+          v-if="$auth.loggedIn"
           :disabled="!canApply"
           color="primary"
           depressed
           @click="add(pricing)"
           >Add</v-btn
         >
-        <v-divider v-if="!$auth.loggedIn" />
+        <v-divider v-if="!$auth.loggedIn && pricing.price > 0" />
       </v-card-text>
       <v-card-actions
-        v-if="!$auth.loggedIn"
+        v-if="!$auth.loggedIn && pricing.price > 0"
         class="text-caption error--text text-md-title"
       >
         <v-spacer />
@@ -129,4 +130,10 @@ export default {
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+.truncate-t {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+</style>

@@ -8,12 +8,29 @@
       <v-spacer />
     </v-app-bar>
     <v-main>
-      <v-container fill-height>
+      <v-row
+        v-if="$vuetify.breakpoint.mdAndUp"
+        align="center"
+        justify="center"
+        class="mt-7"
+      >
+        <v-col cols="12" md="6" offset-md="3">
+          <v-card
+            width="230"
+            flat
+            tile
+            style="background-color: transparent !important"
+          >
+            <v-img :src="img" />
+          </v-card>
+        </v-col>
+      </v-row>
+      <v-container>
         <v-row
           justify="center"
           align="center"
           align-content="center"
-          class="my-5"
+          :class="{ 'mt-9': $vuetify.breakpoint.smAndDown }"
         >
           <v-col cols="12" sm="6" md="5">
             <v-card elevation="12" rounded>
@@ -23,6 +40,8 @@
         </v-row>
       </v-container>
     </v-main>
+    <TheNavFooter />
+    <TheSiteFooter />
     <TheSnackbarAlert />
   </v-app>
 </template>
@@ -30,9 +49,18 @@
 <script>
 import TheSnackbarAlert from '~/components/general/TheSnackbarAlert'
 import TheSiteLogo from '~/components/general/TheSiteLogo'
+import TheNavFooter from '~/components/general/TheNavFooter'
+import TheSiteFooter from '~/components/general/TheSiteFooter'
 export default {
   name: 'Auth',
-  components: { TheSiteLogo, TheSnackbarAlert },
+  components: { TheSiteFooter, TheNavFooter, TheSiteLogo, TheSnackbarAlert },
+  data() {
+    return {
+      img: '/images/auth_page_img.png',
+    }
+  },
+  computed: {},
+  methods: {},
 }
 </script>
 

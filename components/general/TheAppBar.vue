@@ -110,7 +110,7 @@ export default {
         {
           title: 'Payments',
           to: { name: 'student-payments' },
-          icon: 'mdi-badge-account-horizontal-outline',
+          icon: 'mdi-credit-card-outline',
         },
         {
           title: 'Profile',
@@ -174,7 +174,7 @@ export default {
         {
           title: 'Payments',
           to: { name: 'admin-payments' },
-          icon: 'mdi-badge-account-horizontal-outline',
+          icon: 'mdi-credit-card-outline',
         },
         {
           title: 'Profile',

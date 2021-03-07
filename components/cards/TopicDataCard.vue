@@ -8,10 +8,12 @@
       >
       <v-card-text>
         <div
-          :style="{ height: '70px' }"
+          class="truncate-t"
+          :style="{ height: '30px' }"
           @click="showFullDescription(topic.description)"
         >
-          <TextTruncate>{{ topic.description }}</TextTruncate>
+          {{ topic.description }}
+          <!--<TextTruncate>{{ topic.description }}</TextTruncate>-->
         </div>
       </v-card-text>
       <v-card-actions>
@@ -77,4 +79,10 @@ export default {
 }
 </script>
 
-<style scoped></style>
+<style>
+.truncate-t {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+</style>
