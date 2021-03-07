@@ -4,7 +4,7 @@
       <v-card-text>
         <div class="text-center">
           <v-avatar :size="avatarSize" color="primary">
-            <span v-if="!dpAvailable" class="text-h2 white--text">DP</span>
+            <span v-if="!dpAvailable" class="text-h4 white--text">DP</span>
             <v-img v-else :src="profileDP">
               <template #placeholder>
                 <v-row justify="center" align="center" class="fill-height">
@@ -44,7 +44,7 @@ export default {
   },
   computed: {
     profileDP() {
-      return this.$auth.user.dp_link
+      return this.user.dp_link
     },
     dpAvailable() {
       return !!this.profileDP
